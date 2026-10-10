@@ -1,21 +1,87 @@
-import React from "react";
+import ContentLayout from "app/components/layout/home/ContentLayout";
+import ListingRowCard from "app/components/layout/home/footer/ListingRowCard";
+import Pagination from "app/components/layout/home/footer/Pagination";
+import ListingCard from "app/components/layout/home/ListingCard";
+import NewListings from "app/components/layout/home/NewListings";
+import PageHeading from "app/components/layout/home/PageHeading";
+import PriceAreaFilter from "app/components/layout/home/PriceAreaFilter";
+import ProvinceList from "app/components/layout/home/ProvinceList";
+import Tabs, { type TabItem } from "app/components/layout/home/Tabs";
+import {
+  AREA_FILTERS,
+  LISTINGS,
+  NEW_LISTINGS,
+  PRICE_FILTERS,
+  PROVINCES,
+  ROOMS,
+} from "app/data/mock";
+import { useState } from "react";
+import { useSearchParams } from "react-router";
 
-export default function OriginalHouse() {
+const TOTAL_PAGES = 12; // demo, lấy từ API khi có backend
+type TabKey = "suggested" | "latest" | "video";
+
+const TABS: TabItem<TabKey>[] = [
+  { key: "suggested", label: "Đề xuất" },
+  { key: "latest", label: "Mới đăng" },
+  { key: "video", label: "Có video" },
+];
+
+export default function RoomsView() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const page = Math.min(
+    Math.max(1, Number(searchParams.get("page")) || 1),
+    TOTAL_PAGES,
+  );
+
+  const [tab, setTab] = useState<TabKey>("suggested");
+
+  const listings =
+    tab === "video" ? LISTINGS.filter((l) => l.hasVideo) : LISTINGS;
+
+  // Giữ nguyên các query khác (?gia=, ?dt=...), chỉ đổi page
+  const handlePageChange = (next: number) => {
+    setSearchParams((prev) => {
+      prev.set("page", String(next));
+      return prev;
+    });
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
-    <div>
-      <div>
-        <h1 className="text-lg font-semibold">Cho Thuê Căn Hộ Mini + Chung Cư Mini Giá Rẻ, Mới Nhất 2026</h1>
-      </div>
-      <div className="mt-3">
-        <p className="text-xs">
-           Cho thuê căn hộ mini, chung cư mini, tất cả tin đăng cho thuê căn hộ chung cư mini mới nhất 2026: giá rẻ, diện tích nhỏ, đầy đủ tiện nghi, an ninh.
-        </p>
-      </div>
-      <div className="mt-3">
-          <div className="text-sm font-normal">
-             Tỉnh thành 
+    <ContentLayout
+      main={
+        <div className="space-y-5">
+          <PageHeading title="Cho Thuê Nhà Nguyên Căn, Giá Rẻ, Chính Chủ, Mới Nhất 2026" />
+          <ProvinceList
+            prefix="Cho thuê nhà"
+            provinces={PROVINCES}
+            allHref="/nha-nguyen-can"
+          />
+          <Tabs items={TABS} value={tab} onChange={setTab} />
+          <div className="space-y-5">
+            {listings.map((listing) => (
+              <ListingCard key={listing.id} listing={listing} />
+            ))}
           </div>
-      </div>
-    </div>
+          <div className="space-y-4">
+            {ROOMS.map((room) => (
+              <ListingRowCard key={room.id} listing={room} />
+            ))}
+          </div>
+          <Pagination
+            page={page}
+            totalPages={TOTAL_PAGES}
+            onChange={handlePageChange}
+          />
+        </div>
+      }
+      sidebar={
+        <div className="space-y-5">
+          <PriceAreaFilter prices={PRICE_FILTERS} areas={AREA_FILTERS} />
+          <NewListings items={NEW_LISTINGS} />
+        </div>
+      }
+    />
   );
 }

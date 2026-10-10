@@ -99,3 +99,38 @@ export const NEW_LISTINGS: ListingSummary[] = [
     thumbnail: img("new-5", 200, 160),
   },
 ];
+
+
+// Dữ liệu demo, thay bằng dữ liệu từ API
+export const ROOMS: Listing[] = [
+  {
+    id: "101",
+    title: "Chính chủ cho thuê nhà nguyên căn ngay trung tâm Quận Gò Vấp giá rẻ",
+    price: "7.5 triệu/tháng",
+    area: "48 m²",
+    location: "Gò Vấp, Hồ Chí Minh",
+    description:
+      "Cách chợ Hạnh Thông Tây ~200m. Bán kính 500m có đủ tiện ích siêu thị, trường cấp 1,2,3, mẫu giáo, chùa, nhà thờ... Nhà nằm trong khu phố văn minh, an ninh.",
+    images: [img("room-101")],
+    imageCount: 9,
+    hasVideo: false,
+    isVip: false,
+    author: { name: "Nguyễn Văn A", phone: "0900 000 000" },
+    postedAt: "11:30, 05/10/2026",
+  },
+  {
+    id: "102",
+    title: "Nhà nguyên căn, Q. Phú Nhuận 109m2, đầy đủ nội thất, 2PN Giá thuê 13,5 tr/th",
+    price: "13.5 triệu/tháng",
+    area: "109 m²",
+    location: "Phú Nhuận, Hồ Chí Minh",
+    description:
+      "Nhà nguyên căn, Q. Phú Nhuận 109m2, đầy đủ nội thất, 2PN, 1 trệt 1 lầu, 2 PN, có ban công. Nội thất đầy đủ, vào ở ngay, gần chợ và trường học.",
+    images: [img("room-102")],
+    imageCount: 6,
+    hasVideo: false,
+    isVip: false,
+    author: { name: "Trần Thị B", phone: "0911 111 111" },
+    postedAt: "10:38, 04/10/2026",
+  },
+];
