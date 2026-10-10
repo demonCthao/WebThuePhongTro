@@ -1,35 +1,17 @@
-import type { ReactNode } from "react";
-
-type CardRadius = "S" | "MD" | "L" | "XL";
-
-interface CardProps {
-    radius?: CardRadius;
-    children: ReactNode;
-    className?: string;
-}
-
-const radiusClasses: Record<CardRadius, string> = {
-    S: "rounded-sm",
-    MD: "rounded-md",
-    L: "rounded-lg",
-    XL: "rounded-xl",
-};
+import { cn } from "app/helper/cn";
+import type { ComponentPropsWithoutRef } from "react";
 
 export default function Card({
-    radius = "MD",
-    children,
-    className = "",
-}: CardProps) {
-    return (
-        <div className={`
-        w-full
-        bg-white
-        shadow-xs
-        ${radiusClasses[radius]}
-        ${className}
-      `}
-        >
-            {children}
-        </div>
-    );
+  className,
+  ...props
+}: ComponentPropsWithoutRef<"div">) {
+  return (
+    <div
+      className={cn(
+        "rounded-lg bg-white shadow-[0_1px_4px_rgba(0,0,0,0.06)]",
+        className,
+      )}
+      {...props}
+    />
+  );
 }
