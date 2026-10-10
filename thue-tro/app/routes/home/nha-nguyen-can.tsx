@@ -1,4 +1,4 @@
-import RoomsView from "app/views/home/OriginalHouse";
+import RoomsView from "app/views/home/originhome/OriginalHouse";
 
 export function meta() {
   return [{ title: "Cho thuê nhà nguyên căn - Danh sách tin" }];

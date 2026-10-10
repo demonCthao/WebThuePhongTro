@@ -134,3 +134,90 @@ export const ROOMS: Listing[] = [
     postedAt: "10:38, 04/10/2026",
   },
 ];
+
+export type PlanId = "vip-hot" | "vip-1" | "vip-2" | "vip-3" | "normal";
+export type FeatureKey = "autoApprove" | "keep10Days" | "callButton";
+
+export interface Plan {
+  id: PlanId;
+  name: string;
+  stars: number;
+  headerClass: string; // màu nền ô tiêu đề cột
+  titleStyle: string; // chữ hiển thị ở dòng "Màu sắc tiêu đề"
+  titleClass: string; // màu/độ đậm của chữ đó
+  size: string;
+  // Giá CHƯA VAT (đã đúng với bảng giá: 325.000 x 1,08 = 351.000)
+  prices: { d5: number; d10: number; d15: number; d30: number; push: number };
+  discount30: number; // % giảm khi mua 30 ngày
+  features: Record<FeatureKey, boolean>;
+}
+
+export const PLANS: Plan[] = [
+  {
+    id: "vip-hot",
+    name: "Tin VIP Nổi Bật",
+    stars: 5,
+    headerClass: "bg-[#fc2c3b]",
+    titleStyle: "MÀU ĐỎ, IN HOA",
+    titleClass: "font-bold text-[#fc2c3b]",
+    size: "Rất lớn",
+    prices: { d5: 325000, d10: 650000, d15: 975000, d30: 1950000, push: 30000 },
+    discount30: 20,
+    features: { autoApprove: true, keep10Days: true, callButton: true },
+  },
+  {
+    id: "vip-1",
+    name: "Tin VIP 1",
+    stars: 4,
+    headerClass: "bg-[#f7359a]",
+    titleStyle: "MÀU HỒNG, IN HOA",
+    titleClass: "font-bold text-[#f7359a]",
+    size: "Lớn",
+    prices: { d5: 195000, d10: 390000, d15: 585000, d30: 1170000, push: 20000 },
+    discount30: 20,
+    features: { autoApprove: true, keep10Days: true, callButton: true },
+  },
+  {
+    id: "vip-2",
+    name: "Tin VIP 2",
+    stars: 3,
+    headerClass: "bg-[#ff5a1f]",
+    titleStyle: "MÀU CAM, IN HOA",
+    titleClass: "font-bold text-[#ff5a1f]",
+    size: "Trung bình",
+    prices: { d5: 130000, d10: 260000, d15: 390000, d30: 780000, push: 15000 },
+    discount30: 20,
+    features: { autoApprove: true, keep10Days: true, callButton: false },
+  },
+  {
+    id: "vip-3",
+    name: "Tin VIP 3",
+    stars: 2,
+    headerClass: "bg-[#1b5cf3]",
+    titleStyle: "MÀU XANH, IN HOA",
+    titleClass: "font-bold text-[#1b5cf3]",
+    size: "Trung bình",
+    prices: { d5: 75000, d10: 150000, d15: 225000, d30: 450000, push: 10000 },
+    discount30: 20,
+    features: { autoApprove: true, keep10Days: true, callButton: false },
+  },
+  {
+    id: "normal",
+    name: "Tin thường",
+    stars: 0,
+    headerClass: "bg-[#0e4bb4]",
+    titleStyle: "Màu mặc định, viết thường",
+    titleClass: "font-medium text-[#1a56c4]",
+    size: "Nhỏ",
+    prices: { d5: 13500, d10: 27000, d15: 40500, d30: 81000, push: 5000 },
+    discount30: 32,
+    features: { autoApprove: false, keep10Days: false, callButton: false },
+  },
+];
+
+// Ảnh chụp bị cắt ở cuối nên các dòng tính năng phía dưới (nếu còn) bạn thêm vào đây
+export const FEATURE_ROWS: { key: FeatureKey; label: string }[] = [
+  { key: "autoApprove", label: "Tự động duyệt (*)" },
+  { key: "keep10Days", label: "Duy trì thêm 10 ngày tin thường" },
+  { key: "callButton", label: "Hiển thị nút gọi điện" },
+];
