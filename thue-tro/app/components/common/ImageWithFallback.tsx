@@ -5,9 +5,10 @@ interface ImageWithFallbackProps {
   src?: string;
   alt?: string;
   className?: string;
+  fit?: "cover" | "contain";
 }
 
-export default function ImageWithFallback({ src, alt = "", className }: ImageWithFallbackProps) {
+export default function ImageWithFallback({ src, alt = "", className, fit = "cover" }: ImageWithFallbackProps) {
   const [failed, setFailed] = useState(false);
 
   if (!src || failed) {
@@ -15,7 +16,7 @@ export default function ImageWithFallback({ src, alt = "", className }: ImageWit
       <div
         role="img"
         aria-label={alt || "Chưa có ảnh"}
-        className={cn("grid place-items-center bg-neutral-200/70 text-neutral-300", className)}
+        className="grid place-items-center bg-neutral-200/70 text-neutral-300"
       >
         <svg viewBox="0 0 24 24" fill="currentColor" className="size-10">
           <path d="M12 3 2 12h3v8h5v-5h4v5h5v-8h3L12 3Z" />
@@ -30,7 +31,7 @@ export default function ImageWithFallback({ src, alt = "", className }: ImageWit
       alt={alt}
       loading="lazy"
       onError={() => setFailed(true)}
-      className={cn("object-cover", className)}
+      className={cn(fit === "contain" ? "object-contain" : "object-cover", className)}
     />
   );
 }

@@ -9,7 +9,7 @@ interface ContentLayoutProps {
 
 export default function ContentLayout({ main, sidebar }: ContentLayoutProps) {
   return (
-    <div className="bg-[#f7f6f5]">
+    <div>
       <div className="mx-auto flex max-w-[1400px] items-start justify-center gap-5 px-4 py-5">
         <aside className="sticky top-4 hidden w-[120px] shrink-0 xl:ml-0 xl:mr-6 xl:block">
           <AdBanner />

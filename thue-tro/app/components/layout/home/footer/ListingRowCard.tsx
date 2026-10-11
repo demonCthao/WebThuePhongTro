@@ -3,7 +3,7 @@ import { Camera, MapPin } from "lucide-react";
 import FavoriteButton from "./FavoriteButton";
 import type { Listing } from "app/models/home/listing";
 import Card from "app/components/common/Card";
-import ImageWithFallback from "../ImageWithFallback";
+import ImageWithFallback from "../../../common/ImageWithFallback";
 
 interface ListingRowCardProps {
   listing: Listing;

@@ -1,6 +1,6 @@
 import type { ListingSummary } from "app/models/home/listing";
 import { Link } from "react-router";
-import ImageWithFallback from "./ImageWithFallback";
+import ImageWithFallback from "../../common/ImageWithFallback";
 
 interface ListingMiniItemProps {
   item: ListingSummary;

@@ -1,5 +1,5 @@
 import { Camera, Play } from "lucide-react";
-import ImageWithFallback from "./ImageWithFallback";
+import ImageWithFallback from "../../common/ImageWithFallback";
 
 interface ListingGalleryProps {
   title: string;

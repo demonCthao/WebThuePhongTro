@@ -3,7 +3,7 @@ import { FEATURE_ROWS, PLANS } from "app/data/mock";
 import { cn } from "app/helper/cn";
 import PriceCell from "./PriceCell";
 import PlanRow from "./PlanRow";
-import CheckBadge from "./CheckBadge";
+import CheckBadge from "../../../components/common/CheckBadge";
 
 
 interface PricingTableProps {

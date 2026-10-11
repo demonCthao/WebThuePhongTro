@@ -1,5 +1,5 @@
 import type { LinkItem } from "app/components/layout/home/FilterLinkList";
-import type { Listing, ListingSummary } from "app/models/home/listing";
+import type { Listing, ListingDetail, ListingSummary } from "app/models/home/listing";
 
 
 const img = (seed: string, w = 600, h = 400) => `https://picsum.photos/seed/${seed}/${w}/${h}`;
@@ -221,3 +221,56 @@ export const FEATURE_ROWS: { key: FeatureKey; label: string }[] = [
   { key: "keep10Days", label: "Duy trì thêm 10 ngày tin thường" },
   { key: "callButton", label: "Hiển thị nút gọi điện" },
 ];
+
+
+// Dữ liệu demo (tên, số điện thoại là giả)
+const DETAIL: ListingDetail = {
+  id: "590697",
+  code: "#590697",
+  title: "Cần tìm bạn nữ ở ghép gấp 20/09 tại Chung cư Screc, 974A Đường Trường Sa, Phường 12, Quận 3",
+  planId: "vip-3",
+  fastRent: true,
+  price: "2 triệu/tháng",
+  area: "20 m²",
+  updatedAt: "3 giờ trước",
+  district: { label: "Tìm người ở ghép Quận 3", to: "/o-ghep/ho-chi-minh/quan-3" },
+  province: { label: "Hồ Chí Minh", to: "/o-ghep/ho-chi-minh" },
+  address: "Chung cư Screc, 974A Đường Trường Sa, Phường Bàn Cờ, Hồ Chí Minh",
+  postedAt: "Chủ Nhật, 22:07 13/09/2026",
+  expiresAt: "Thứ 3, 22:07 13/10/2026",
+  description:
+    "Phòng mình có 1 bạn nữ về quê nên cần tìm thêm 1 bạn nữ ở ghép để chia tiền phòng. Giá phòng 4tr/2 người, đã gồm tất cả chi phí.\n\nPhòng có sẵn nệm nằm riêng, 1 tủ đựng quần áo dành riêng cho người ở ghép. Nhà full nội thất (nấu ăn, máy giặt, máy nước nóng...). Nhà nằm khu vực trung tâm, lầu 22 có ban công hướng ra kênh thoáng mát. Dưới là nhà sách, siêu thị... thuận tiện đi lại các quận.\n\nƯu tiên nữ đã đi làm, ít đồ và ở lâu dài. Liên hệ xem phòng 0900 000 000 (Mai).",
+  images: [img("detail-1"), img("detail-2"), img("detail-3"), img("detail-4")],
+  amenities: [
+    { label: "Đầy đủ nội thất", available: true },
+    { label: "Có gác", available: false },
+    { label: "Có kệ bếp", available: true },
+    { label: "Có máy lạnh", available: false },
+    { label: "Có máy giặt", available: true },
+    { label: "Có tủ lạnh", available: true },
+    { label: "Có thang máy", available: true },
+    { label: "Không chung chủ", available: true },
+    { label: "Giờ giấc tự do", available: true },
+    { label: "Có bảo vệ 24/24", available: true },
+    { label: "Có hầm để xe", available: true },
+  ],
+  breadcrumb: [
+    { label: "Tìm người ở ghép", to: "/o-ghep" },
+    { label: "Hồ Chí Minh", to: "/o-ghep/ho-chi-minh" },
+    { label: "Quận 3", to: "/o-ghep/ho-chi-minh/quan-3" },
+    { label: "Phường Bàn Cờ", to: "/o-ghep/ho-chi-minh/quan-3/phuong-ban-co" },
+    { label: "Cần tìm bạn nữ ở ghép gấp 20/09 tại Chung cư Screc, 974A Đường Trường Sa, Phường 12, Quận 3" },
+  ],
+  author: {
+    name: "Nguyễn Thị Mai",
+    phone: "0900 000 000",
+    online: true,
+    listingCount: 1,
+    joinedAt: "07/10/2021",
+  },
+};
+
+// Demo: mọi id đều trả về cùng một tin. Khi có API: gọi API theo id (và trả 404 nếu không có).
+export function getListingDetail(id: string): ListingDetail {
+  return { ...DETAIL, id, code: `#${id}` };
+}

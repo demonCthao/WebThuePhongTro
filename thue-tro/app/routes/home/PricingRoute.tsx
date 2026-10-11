@@ -4,6 +4,6 @@ export function meta() {
   return [{ title: "Bảng giá dịch vụ đăng tin" }];
 }
 
-export default function BangGiaDichVuRoute() {
+export default function PricingRoute() {
   return <PricingView />;
 }

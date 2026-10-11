@@ -1,5 +1,5 @@
 import { cn } from "app/helper/cn";
-import ImageWithFallback from "./ImageWithFallback";
+import ImageWithFallback from "../../common/ImageWithFallback";
 
 interface AdBannerProps {
   src?: string;

@@ -1,6 +1,6 @@
 import AdminLayout from "app/views/admin";
 import HomeLayout from "app/views/home";
-import OriginalHouse from "app/views/home/originhome/OriginalHouse";
+import OriginalHouse from "app/views/home/origin-home/OriginalHouse";
 import { createBrowserRouter, RouterProvider } from "react-router";
 
 const router = createBrowserRouter([
