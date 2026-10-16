@@ -4,7 +4,7 @@ import type { Listing, ListingDetail, ListingSummary } from "app/models/home/lis
 
 const img = (seed: string, w = 600, h = 400) => `https://picsum.photos/seed/${seed}/${w}/${h}`;
 
-export const PROVINCES: LinkItem[] = [
+export const PROVINCE_OPTIONS: LinkItem[] = [
   { label: "Hồ Chí Minh", to: "/nha-nguyen-can/ho-chi-minh" },
   { label: "Hà Nội", to: "/nha-nguyen-can/ha-noi" },
   { label: "Đà Nẵng", to: "/nha-nguyen-can/da-nang" },
@@ -274,3 +274,98 @@ const DETAIL: ListingDetail = {
 export function getListingDetail(id: string): ListingDetail {
   return { ...DETAIL, id, code: `#${id}` };
 }
+
+export interface Option {
+  value: string;
+  label: string;
+}
+
+export interface Category extends Option {
+  icon: "door" | "house" | "users" | "store" | "building";
+  heading: string; // tiêu đề trang danh sách
+}
+
+export interface Province extends Option {
+  districts: Option[];
+}
+
+// value cũng là đường dẫn: /phong-tro, /o-ghep... (khớp với menu trên Header)
+export const CATEGORIES: Category[] = [
+  { value: "phong-tro", label: "Phòng trọ", icon: "door", heading: "Cho Thuê Phòng Trọ, Nhà Trọ Giá Rẻ, Mới Nhất 2026" },
+  { value: "nha-nguyen-can", label: "Nhà riêng", icon: "house", heading: "Cho Thuê Nhà Nguyên Căn, Giá Rẻ, Chính Chủ, Mới Nhất 2026" },
+  { value: "o-ghep", label: "Ở ghép", icon: "users", heading: "Tìm Người Ở Ghép, Chia Sẻ Phòng Giá Rẻ, Mới Nhất 2026" },
+  { value: "mat-bang", label: "Mặt bằng", icon: "store", heading: "Cho Thuê Mặt Bằng Kinh Doanh, Giá Rẻ, Mới Nhất 2026" },
+  { value: "can-ho-chung-cu", label: "Căn hộ chung cư", icon: "building", heading: "Cho Thuê Căn Hộ Chung Cư, Giá Rẻ, Mới Nhất 2026" },
+  { value: "can-ho-mini", label: "Căn hộ mini", icon: "building", heading: "Cho Thuê Căn Hộ Mini, Giá Rẻ, Mới Nhất 2026" },
+  { value: "can-ho-dich-vu", label: "Căn hộ dịch vụ", icon: "building", heading: "Cho Thuê Căn Hộ Dịch Vụ, Giá Rẻ, Mới Nhất 2026" },
+];
+
+// Demo vài quận cho 3 tỉnh đầu. Tỉnh khác để districts rỗng, bạn bổ sung hoặc lấy từ API.
+export const PROVINCES: Province[] = [
+  {
+    value: "ho-chi-minh",
+    label: "Hồ Chí Minh",
+    districts: [
+      { value: "quan-1", label: "Quận 1" },
+      { value: "quan-3", label: "Quận 3" },
+      { value: "quan-7", label: "Quận 7" },
+      { value: "quan-10", label: "Quận 10" },
+      { value: "binh-thanh", label: "Bình Thạnh" },
+      { value: "go-vap", label: "Gò Vấp" },
+      { value: "phu-nhuan", label: "Phú Nhuận" },
+      { value: "tan-binh", label: "Tân Bình" },
+      { value: "thu-duc", label: "Thủ Đức" },
+    ],
+  },
+  {
+    value: "ha-noi",
+    label: "Hà Nội",
+    districts: [
+      { value: "cau-giay", label: "Cầu Giấy" },
+      { value: "dong-da", label: "Đống Đa" },
+      { value: "ha-dong", label: "Hà Đông" },
+      { value: "hai-ba-trung", label: "Hai Bà Trưng" },
+      { value: "thanh-xuan", label: "Thanh Xuân" },
+      { value: "nam-tu-liem", label: "Nam Từ Liêm" },
+    ],
+  },
+  {
+    value: "da-nang",
+    label: "Đà Nẵng",
+    districts: [
+      { value: "hai-chau", label: "Hải Châu" },
+      { value: "thanh-khe", label: "Thanh Khê" },
+      { value: "son-tra", label: "Sơn Trà" },
+      { value: "ngu-hanh-son", label: "Ngũ Hành Sơn" },
+    ],
+  },
+  { value: "can-tho", label: "Cần Thơ", districts: [] },
+  { value: "binh-duong", label: "Bình Dương", districts: [] },
+  { value: "dong-nai", label: "Đồng Nai", districts: [] },
+  { value: "vung-tau", label: "Vũng Tàu", districts: [] },
+  { value: "khanh-hoa", label: "Khánh Hòa", districts: [] },
+  { value: "hai-phong", label: "Hải Phòng", districts: [] },
+];
+
+// value rỗng = "Tất cả"
+export const PRICE_OPTIONS: Option[] = [
+  { value: "", label: "Tất cả" },
+  { value: "0-1", label: "Dưới 1 triệu" },
+  { value: "1-2", label: "1 - 2 triệu" },
+  { value: "2-3", label: "2 - 3 triệu" },
+  { value: "3-5", label: "3 - 5 triệu" },
+  { value: "5-7", label: "5 - 7 triệu" },
+  { value: "7-10", label: "7 - 10 triệu" },
+  { value: "10-15", label: "10 - 15 triệu" },
+  { value: "15-", label: "Trên 15 triệu" },
+];
+
+export const AREA_OPTIONS: Option[] = [
+  { value: "", label: "Tất cả" },
+  { value: "0-20", label: "Dưới 20m²" },
+  { value: "20-30", label: "Từ 20m² - 30m²" },
+  { value: "30-50", label: "Từ 30m² - 50m²" },
+  { value: "50-70", label: "Từ 50m² - 70m²" },
+  { value: "70-90", label: "Từ 70m² - 90m²" },
+  { value: "90-", label: "Trên 90m²" },
+];

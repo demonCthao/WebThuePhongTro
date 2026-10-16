@@ -2,6 +2,10 @@ import Logo from "./Logo";
 import SearchBar from "./SearchBar";
 import UserMenu from "./UserMenu";
 import NavMenu, { type NavItem } from "./NavMenu";
+import FilterModal from "./FilterModal";
+import { useState } from "react";
+import { buildFilterUrl, parseFilters, type FilterValues } from "app/helper/filters";
+import { useLocation, useNavigate } from "react-router";
 
 const NAV_ITEMS: NavItem[] = [
   { label: "Phòng trọ", href: "/phong-tro" },
@@ -17,18 +21,34 @@ const NAV_ITEMS: NavItem[] = [
 ];
 
 export default function Header() {
+  const [filterOpen, setFilterOpen] = useState(false);
+  const { pathname, search } = useLocation();
+  const navigate = useNavigate();
+
+  const handleApply = (values: FilterValues) => {
+    setFilterOpen(false);
+    navigate(buildFilterUrl(values));
+  };
+
   return (
     <header className="bg-white text-sm text-neutral-900 relative z-10 bg-white text-sm text-neutral-900 shadow-md">
       <div className="mx-auto max-w-[1300px] px-4">
         <div className="flex flex-wrap items-center justify-between gap-4 py-2.5 lg:h-[58px] lg:flex-nowrap lg:py-0">
           <div className="flex items-center gap-9">
             <Logo />
-            <SearchBar />
+            <SearchBar onFilterClick={() => setFilterOpen(true)} />
           </div>
           <UserMenu userName="a dep trai" />
         </div>
         <NavMenu items={NAV_ITEMS} activeHref="/phong-tro" />
       </div>
+
+      <FilterModal
+        open={filterOpen}
+        onClose={() => setFilterOpen(false)}
+        initial={parseFilters(pathname, search)}
+        onApply={handleApply}
+      />
     </header>
   );
 }

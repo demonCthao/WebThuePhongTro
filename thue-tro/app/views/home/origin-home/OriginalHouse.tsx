@@ -12,7 +12,7 @@ import {
   LISTINGS,
   NEW_LISTINGS,
   PRICE_FILTERS,
-  PROVINCES,
+  PROVINCE_OPTIONS,
   ROOMS,
 } from "app/data/mock";
 import { useState } from "react";
@@ -55,7 +55,7 @@ export default function RoomsView() {
           <PageHeading title="Cho Thuê Nhà Nguyên Căn, Giá Rẻ, Chính Chủ, Mới Nhất 2026" />
           <ProvinceList
             prefix="Cho thuê nhà"
-            provinces={PROVINCES}
+            provinces={PROVINCE_OPTIONS}
             allHref="/nha-nguyen-can"
           />
           <Tabs items={TABS} value={tab} onChange={setTab} />
