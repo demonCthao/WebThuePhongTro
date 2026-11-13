@@ -1,11 +1,25 @@
+import { LIST_ROOMS_ROUTE } from "app/const/router";
+import {
+  buildFilterUrl,
+  parseFilters,
+  type FilterValues,
+} from "app/helper/filters";
+import { useFetch } from "app/hooks/useFetch";
+import type { DataList } from "app/models/home/response.model";
+import { useLocationStore } from "app/stores/location.store";
+import type { Provinces, Wards } from "app/types/prisma-models";
+import RegionDialog, {
+  EMPTY_REGION,
+  type RegionValue,
+} from "app/views/home/RegionDialog";
+import { useState } from "react";
+import { useLocation, useNavigate } from "react-router";
+import FilterModal from "./FilterModal";
 import Logo from "./Logo";
+import NavMenu, { type NavItem } from "./NavMenu";
 import SearchBar from "./SearchBar";
 import UserMenu from "./UserMenu";
-import NavMenu, { type NavItem } from "./NavMenu";
-import FilterModal from "./FilterModal";
-import { useState } from "react";
-import { buildFilterUrl, parseFilters, type FilterValues } from "app/helper/filters";
-import { useLocation, useNavigate } from "react-router";
+import { getSession } from "app/helper/auth-storage";
 
 const NAV_ITEMS: NavItem[] = [
   { label: "Phòng trọ", href: "/phong-tro" },
@@ -21,13 +35,33 @@ const NAV_ITEMS: NavItem[] = [
 ];
 
 export default function Header() {
-  const [filterOpen, setFilterOpen] = useState(false);
   const { pathname, search } = useLocation();
   const navigate = useNavigate();
+  const [filterOpen, setFilterOpen] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [provinceSelected, setProvinceSelected] = useState<string[]>([]);
+  const setLocationFromRegion = useLocationStore(
+    (s) => s.setLocationFromRegion,
+  );
+  const [region, setRegion] = useState<RegionValue>(EMPTY_REGION);
+
+  const { data } = useFetch<DataList<Provinces>>({
+    url: "/provinces/all",
+    key: ["provinces/all"],
+  });
+
+  const { data: dataWards } = useFetch<DataList<Wards>>({
+    url: "/wards",
+    key: ["wards"],
+  });
 
   const handleApply = (values: FilterValues) => {
     setFilterOpen(false);
     navigate(buildFilterUrl(values));
+  };
+
+  const setSelected = (provinces: string[]) => {
+    setProvinceSelected(provinces);
   };
 
   return (
@@ -36,11 +70,14 @@ export default function Header() {
         <div className="flex flex-wrap items-center justify-between gap-4 py-2.5 lg:h-[58px] lg:flex-nowrap lg:py-0">
           <div className="flex items-center gap-9">
             <Logo />
-            <SearchBar onFilterClick={() => setFilterOpen(true)} />
+            <SearchBar
+              onFilterClick={() => setFilterOpen(true)}
+              onFilterProvince={() => setOpen(true)}
+            />
           </div>
-          <UserMenu userName="a dep trai" />
+          <UserMenu />
         </div>
-        <NavMenu items={NAV_ITEMS} activeHref="/phong-tro" />
+        <NavMenu items={NAV_ITEMS} activeHref={pathname} />
       </div>
 
       <FilterModal
@@ -48,6 +85,21 @@ export default function Header() {
         onClose={() => setFilterOpen(false)}
         initial={parseFilters(pathname, search)}
         onApply={handleApply}
+      />
+
+      <RegionDialog
+        open={open}
+        onClose={() => setOpen(false)}
+        value={region}
+        onChange={(v) => {
+          navigate(`${LIST_ROOMS_ROUTE}?province=${v.province?.code}&ward=${v.ward?.code}`)
+          console.log("🚀 ~ Header ~ LIST_ROOMS_ROUTE:", LIST_ROOMS_ROUTE)
+          setRegion(v); // để dialog tick đúng dòng đã chọn
+          setLocationFromRegion(v); // lưu full_name vào store
+        }}
+        provinces={data?.list}
+        wards={dataWards?.list}
+        onProvinceOpen={(p) => {}}
       />
     </header>
   );

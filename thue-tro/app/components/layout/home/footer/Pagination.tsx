@@ -21,7 +21,7 @@ function PageButton({ active, className, ...props }: PageButtonProps) {
       aria-current={active ? "page" : undefined}
       className={cn(
         baseClass,
-        active ? "bg-[#ff5722] font-medium text-white" : "hover:bg-neutral-50",
+        active ? "bg-[#ff5722] font-medium text-gray-400" : "hover:bg-neutral-50",
         "disabled:cursor-not-allowed disabled:opacity-50",
         className
       )}

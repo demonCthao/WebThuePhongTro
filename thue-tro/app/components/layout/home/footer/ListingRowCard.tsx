@@ -4,14 +4,17 @@ import FavoriteButton from "./FavoriteButton";
 import type { Listing } from "app/models/home/listing";
 import Card from "app/components/common/Card";
 import ImageWithFallback from "../../../common/ImageWithFallback";
+import type { Rooms } from "app/types/prisma-models";
+import { formatVnd } from "app/helper/price";
+import { formatDate } from "app/helper/date";
 
 interface ListingRowCardProps {
-  listing: Listing;
+  room: Rooms;
 }
 
 // Thẻ tin dạng hàng ngang: ảnh bên trái, nội dung bên phải (trang danh sách)
-export default function ListingRowCard({ listing }: ListingRowCardProps) {
-  const { id, title, price, area, location, description, images, imageCount, postedAt } = listing;
+export default function ListingRowCard({ room }: ListingRowCardProps) {
+  const { id, title, price_monthly, wards, provinces, street_address, description, room_media, created_at } = room;
 
   return (
     <Card className="flex gap-4 p-4 max-sm:flex-col">
@@ -19,10 +22,10 @@ export default function ListingRowCard({ listing }: ListingRowCardProps) {
         to={`/phong-tro/${id}`}
         className="relative block h-[238px] w-[250px] shrink-0 overflow-hidden rounded-md max-sm:w-full"
       >
-        <ImageWithFallback src={images[0]} alt={title} className="size-full" />
+        <ImageWithFallback src={room_media?.[0].url} alt={title} className="size-full" />
         <span className="absolute bottom-2 left-2 flex items-center gap-1 rounded bg-black/55 px-1.5 py-0.5 text-xs text-white">
           <Camera size={13} />
-          {imageCount}
+          {room_media?.length}
         </span>
       </Link>
 
@@ -34,20 +37,20 @@ export default function ListingRowCard({ listing }: ListingRowCardProps) {
         </h2>
 
         <div className="mt-1 flex items-center gap-2 text-base text-neutral-900">
-          <span className="font-medium text-[#17b169]">{price}</span>
+          <span className="font-medium text-[#17b169]">{formatVnd(Number(price_monthly?? "0"))}</span>
           <span className="text-neutral-300">•</span>
-          <span>{area}</span>
+          <span>{provinces?.full_name}</span>
         </div>
 
         <p className="mt-2 flex items-center gap-1.5 text-base text-neutral-900">
           <MapPin size={14} className="shrink-0 text-neutral-500" />
-          {location}
+          {street_address}, {wards?.full_name}, {provinces?.full_name}
         </p>
 
         <p className="mt-2 line-clamp-2 text-sm leading-6 text-neutral-500">{description}</p>
 
         <div className="mt-auto flex items-center justify-between pt-3">
-          <span className="text-sm text-neutral-500">{postedAt}</span>
+          <span className="text-sm text-neutral-500">{formatDate(created_at, 'datetime')}</span>
           <FavoriteButton variant="soft" />
         </div>
       </div>

@@ -67,12 +67,12 @@ export default function FilterModal({ open, onClose, initial, onApply }: FilterM
       open={open}
       onClose={onClose}
       title="Bộ lọc"
-      size="lg"
+      size="xl"
       footer={
         <button
           type="button"
           onClick={() => onApply(draft)}
-          className="h-11 w-full rounded-full bg-[#ff5722] text-base font-medium text-white transition-[filter] hover:brightness-95"
+          className="h-11 w-full rounded-lg bg-[#ff5722] text-base font-medium text-white transition-[filter] hover:brightness-95"
         >
           Áp dụng
         </button>

@@ -20,7 +20,7 @@ export default function FilterLinkList({ title, items }: FilterLinkListProps) {
         {items.map((item) => (
           <li key={item.to}>
             <Link
-              to={item.to}
+              to={`/${item.to}`}
               className="flex items-center gap-1 text-[13px] text-[#1a5fd1] hover:underline"
             >
               <ChevronRight size={12} className="shrink-0 text-[#f4511e]" />

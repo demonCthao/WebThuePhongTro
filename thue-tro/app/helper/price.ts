@@ -9,3 +9,13 @@ export const applyDiscount = (base: number, percent: number) =>
 
 // 351000 -> "351.000₫"
 export const formatVnd = (amount: number) => `${new Intl.NumberFormat("vi-VN").format(amount)}₫`;
+
+export const formatPrice = (price: number | bigint): string => {
+  const value = Number(price);
+
+  if (value >= 1_000_000) {
+    return `${Number((value / 1_000_000).toFixed(2))} triệu`;
+  }
+
+  return `${new Intl.NumberFormat('vi-VN').format(value)} VNĐ`;
+};

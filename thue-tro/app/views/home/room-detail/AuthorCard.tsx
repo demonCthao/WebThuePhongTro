@@ -16,11 +16,11 @@ export default function AuthorCard({ author, title, listingCode }: AuthorCardPro
   return (
     <Card className="p-[17px]">
       <div className="flex flex-col items-center">
-        <Avatar size={125} src={author.avatarUrl} alt={author.name} />
+        <Avatar size={125} src={""} alt={author.avatarUrl} />
         <AuthorMeta author={author} align="center" />
       </div>
       <div className="mt-4">
-        <ContactButtons phone={author.phone} layout="stack" />
+        <ContactButtons phone={author.phone?? ""} layout="stack" />
       </div>
       <div className="mt-5">
         <ActionBar title={title} listingCode={listingCode} />

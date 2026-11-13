@@ -1,25 +1,26 @@
 import type { LinkItem } from "app/components/layout/home/FilterLinkList";
+import { LIST_ROOMS_ROUTE } from "app/const/router";
 import type { Listing, ListingDetail, ListingSummary } from "app/models/home/listing";
 
 
 const img = (seed: string, w = 600, h = 400) => `https://picsum.photos/seed/${seed}/${w}/${h}`;
 
 export const PROVINCE_OPTIONS: LinkItem[] = [
-  { label: "Hồ Chí Minh", to: "/nha-nguyen-can/ho-chi-minh" },
-  { label: "Hà Nội", to: "/nha-nguyen-can/ha-noi" },
-  { label: "Đà Nẵng", to: "/nha-nguyen-can/da-nang" },
-  { label: "Bình Dương", to: "/nha-nguyen-can/binh-duong" },
+  { label: "Hồ Chí Minh", to: `${LIST_ROOMS_ROUTE}?minPrice=0&page=1&province=79` },
+  { label: "Hà Nội", to: `${LIST_ROOMS_ROUTE}?minPrice=0&page=1&province=01`},
+  { label: "Đà Nẵng", to: `${LIST_ROOMS_ROUTE}?minPrice=0&page=1&province=48` },
+  { label: "Huế", to: `${LIST_ROOMS_ROUTE}?minPrice=0&page=1&province=46` },
 ];
 
 export const PRICE_FILTERS: LinkItem[] = [
-  { label: "Dưới 1 triệu", to: "?gia=0-1" },
-  { label: "Từ 1 - 2 triệu", to: "?gia=1-2" },
-  { label: "Từ 2 - 3 triệu", to: "?gia=2-3" },
-  { label: "Từ 3 - 5 triệu", to: "?gia=3-5" },
-  { label: "Từ 5 - 7 triệu", to: "?gia=5-7" },
-  { label: "Từ 7 - 10 triệu", to: "?gia=7-10" },
-  { label: "Từ 10 - 15 triệu", to: "?gia=10-15" },
-  { label: "Trên 15 triệu", to: "?gia=15-" },
+  { label: "Dưới 1 triệu", to: "danh-sach?maxPrice=1000000&minPrice=0&page=1" },
+  { label: "Từ 1 - 2 triệu", to: "danh-sach?maxPrice=2000000&minPrice=1000000&page=1" },
+  { label: "Từ 2 - 3 triệu", to: "danh-sach?maxPrice=3000000&minPrice=2000000&page=1" },
+  { label: "Từ 3 - 5 triệu", to: "danh-sach?maxPrice=5000000&minPrice=3000000&page=1" },
+  { label: "Từ 5 - 7 triệu", to: "danh-sach?maxPrice=7000000&minPrice=5000000&page=1" },
+  { label: "Từ 7 - 10 triệu", to: "danh-sach?maxPrice=10000000&minPrice=7000000&page=1" },
+  { label: "Từ 10 - 15 triệu", to: "danh-sach?maxPrice=15000000&minPrice=10000000&page=1" },
+  { label: "Trên 15 triệu", to: "danh-sach?minPrice=15000000&page=1" },
 ];
 
 export const AREA_FILTERS: LinkItem[] = [
@@ -200,6 +201,18 @@ export const PLANS: Plan[] = [
     prices: { d5: 75000, d10: 150000, d15: 225000, d30: 450000, push: 10000 },
     discount30: 20,
     features: { autoApprove: true, keep10Days: true, callButton: false },
+  },
+  {
+    id: "normal",
+    name: "Tin thường",
+    stars: 1,
+    headerClass: "bg-[#0e4bb4]",
+    titleStyle: "Màu mặc định, viết thường",
+    titleClass: "font-medium text-[#1a56c4]",
+    size: "Nhỏ",
+    prices: { d5: 13500, d10: 27000, d15: 40500, d30: 81000, push: 5000 },
+    discount30: 32,
+    features: { autoApprove: false, keep10Days: false, callButton: false },
   },
   {
     id: "normal",

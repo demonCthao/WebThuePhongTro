@@ -10,11 +10,12 @@ import Tabs, { type TabItem } from "app/components/layout/home/Tabs";
 import {
   AREA_FILTERS,
   LISTINGS,
-  NEW_LISTINGS,
   PRICE_FILTERS,
-  PROVINCE_OPTIONS,
-  ROOMS,
+  PROVINCE_OPTIONS
 } from "app/data/mock";
+import { useFetch } from "app/hooks/useFetch";
+import type { DataList } from "app/models/home/response.model";
+import type { Rooms } from "app/types/prisma-models";
 import { useState } from "react";
 import { useSearchParams } from "react-router";
 
@@ -29,12 +30,13 @@ const TABS: TabItem<TabKey>[] = [
 
 export default function RoomsView() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const page = Math.min(
-    Math.max(1, Number(searchParams.get("page")) || 1),
-    TOTAL_PAGES,
-  );
-
   const [tab, setTab] = useState<TabKey>("suggested");
+  const page = Number(searchParams.get("page")) || 1;
+  const { data, isLoading, error, refetch } = useFetch<DataList<Rooms>>({
+    url: `/rooms?pageIndex=${page}`,
+    key: ["/rooms", searchParams.get("page")?? ""]
+  });
+
 
   const listings =
     tab === "video" ? LISTINGS.filter((l) => l.hasVideo) : LISTINGS;
@@ -56,7 +58,6 @@ export default function RoomsView() {
           <ProvinceList
             prefix="Cho thuê nhà"
             provinces={PROVINCE_OPTIONS}
-            allHref="/nha-nguyen-can"
           />
           <Tabs items={TABS} value={tab} onChange={setTab} />
           <div className="space-y-5">
@@ -65,13 +66,13 @@ export default function RoomsView() {
             ))}
           </div>
           <div className="space-y-4">
-            {ROOMS.map((room) => (
-              <ListingRowCard key={room.id} listing={room} />
+            {data?.list.map((room) => (
+              <ListingRowCard key={room.id} room={room} />
             ))}
           </div>
           <Pagination
             page={page}
-            totalPages={TOTAL_PAGES}
+            totalPages={data?.totalPages?? 1}
             onChange={handlePageChange}
           />
         </div>
@@ -79,7 +80,7 @@ export default function RoomsView() {
       sidebar={
         <div className="space-y-5">
           <PriceAreaFilter prices={PRICE_FILTERS} areas={AREA_FILTERS} />
-          <NewListings items={NEW_LISTINGS} />
+          <NewListings />
         </div>
       }
     />

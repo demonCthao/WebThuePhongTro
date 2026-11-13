@@ -1,13 +1,16 @@
-import type { Plan } from "app/data/mock";
+import { PLANS, type Plan } from "app/data/mock";
 import type { ListingDetail } from "app/models/home/listing";
 import type { ReactNode } from "react";
 import { Link } from "react-router";
 import VipBadge from "./VipBadge";
 import { cn } from "app/helper/cn";
+import type { Rooms } from "app/types/prisma-models";
+import { formatPrice } from "app/helper/price";
+import { formatDate } from "app/helper/date";
+import { LIST_ROOMS_ROUTE } from "app/const/router";
 
 interface ListingHeaderProps {
-  detail: ListingDetail;
-  plan?: Plan; // gói tin: quyết định nhãn VIP và màu tiêu đề
+  detail?: Rooms;
 }
 
 function InfoRow({ label, children }: { label: string; children: ReactNode }) {
@@ -19,43 +22,56 @@ function InfoRow({ label, children }: { label: string; children: ReactNode }) {
   );
 }
 
-const linkClass = "text-[#1a5fd1] underline underline-offset-2 hover:no-underline";
+const linkClass =
+  "text-[#1a5fd1] underline underline-offset-2 hover:no-underline";
 
-export default function ListingHeader({ detail, plan }: ListingHeaderProps) {
+export default function ListingHeader({ detail }: ListingHeaderProps) {
+  const plan = PLANS.find(p => p.stars === detail?.vip_level)?? PLANS[5]
+
   return (
     <header>
-      {plan && plan.stars > 0 && (
-        <VipBadge label={plan.name} stars={plan.stars} className={plan.headerClass} />
-      )}
-
+      {plan && <VipBadge label={plan?.name} stars={plan.stars} className={plan.headerClass} />}
       <h1 className={cn("mt-2 text-[26px] leading-9", plan?.titleClass ?? "font-bold text-[#1a5fd1]")}>
-        {detail.title}
+        {detail?.title}
       </h1>
 
       <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
         <div className="flex items-center gap-3">
-          <span className="text-[22px] font-bold text-[#17b169]">{detail.price}</span>
+          <span className="text-[22px] font-bold text-[#17b169]">
+            {formatPrice(Number(detail?.price_monthly ?? 0))}
+          </span>
           <span className="text-neutral-300">•</span>
-          <span className="text-[15px] text-neutral-900">{detail.area}</span>
+          <span className="text-[15px] text-neutral-900">
+            {detail?.street_address}, {detail?.wards?.full_name},{" "}
+            {detail?.provinces?.full_name}
+          </span>
         </div>
-        <span className="text-sm text-neutral-700">Cập nhật: {detail.updatedAt}</span>
+        <span className="text-sm text-neutral-700">
+          Cập nhật: {formatDate(detail?.created_at ?? "", "datetime")}
+        </span>
       </div>
 
       <dl className="mt-5 grid grid-cols-[110px_1fr] gap-x-3 gap-y-3.5 text-[15px] sm:grid-cols-[130px_1fr]">
-        <InfoRow label="Quận huyện:">
-          <Link to={detail.district.to} className={linkClass}>
-            {detail.district.label}
+        <InfoRow label="Phường:">
+          <Link to={`${LIST_ROOMS_ROUTE}?ward=${detail?.wards?.code}`} className={linkClass}>
+            {detail?.wards?.full_name}
           </Link>
         </InfoRow>
         <InfoRow label="Tỉnh thành:">
-          <Link to={detail.province.to} className={linkClass}>
-            {detail.province.label}
+          <Link to={`${LIST_ROOMS_ROUTE}?province=${detail?.provinces?.code}`} className={linkClass}>
+            {detail?.provinces?.full_name}
           </Link>
         </InfoRow>
-        <InfoRow label="Địa chỉ:">{detail.address}</InfoRow>
-        <InfoRow label="Mã tin:">{detail.code}</InfoRow>
-        <InfoRow label="Ngày đăng:">{detail.postedAt}</InfoRow>
-        <InfoRow label="Ngày hết hạn:">{detail.expiresAt}</InfoRow>
+        <InfoRow label="Địa chỉ:">
+          {detail?.street_address}, {detail?.wards?.full_name},{" "}
+          {detail?.provinces?.full_name}
+        </InfoRow>
+        <InfoRow label="Ngày đăng:">
+          {formatDate(detail?.created_at ?? "", "datetime")}
+        </InfoRow>
+        <InfoRow label="Ngày hết hạn:">
+          {formatDate(detail?.expires_at ?? "", "datetime")}
+        </InfoRow>
       </dl>
     </header>
   );

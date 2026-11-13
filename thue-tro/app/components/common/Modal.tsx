@@ -8,8 +8,15 @@ interface ModalProps {
   onClose: () => void;
   children: ReactNode;
   footer?: ReactNode; // cố định ở đáy, thân modal cuộn riêng
-  size?: "md" | "lg";
+  size?: "md" | "lg" | "xl" | "2xl";
 }
+
+const modalSizeClasses = {
+  md: "w-[min(480px,92vw)]",
+  lg: "w-[min(600px,94vw)]",
+  xl: "w-[min(800px,96vw)]",
+  "2xl": "w-[min(1000px,96vw)]",
+};
 
 // Dùng thẻ <dialog> gốc: tự khoá cuộn nền, tự xử lý phím Esc và focus
 export default function Modal({
@@ -38,7 +45,7 @@ export default function Modal({
       }}
       className={cn(
         "m-auto rounded-xl p-0 shadow-xl backdrop:bg-black/50",
-        size === "lg" ? "w-[min(600px,94vw)]" : "w-[min(480px,92vw)]",
+        modalSizeClasses[size ?? "md"],
       )}
     >
       <div className="flex max-h-[90vh] flex-col">
