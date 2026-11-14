@@ -4,15 +4,17 @@ import { useFetch } from "app/hooks/useFetch";
 import type { DataList } from "app/models/home/response.model";
 import type { Provinces } from "app/types/prisma-models";
 import { provincesColumns } from "./ProvinceTable";
+import { useState } from "react";
 
 export default function ProvincesList() {
+    const [first, setfirst] = useState<Provinces | undefined>(undefined);
     const { data, isLoading, refetch } = useFetch<DataList<Provinces>>({
         url: `/provinces`,
         key: ["provinces"],
     });
 
     const handleChoose = (province: Provinces) => {
-
+        
     }
 
     return (

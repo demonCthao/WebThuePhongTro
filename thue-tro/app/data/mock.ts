@@ -24,12 +24,12 @@ export const PRICE_FILTERS: LinkItem[] = [
 ];
 
 export const AREA_FILTERS: LinkItem[] = [
-  { label: "Dưới 20 m²", to: "?dt=0-20" },
-  { label: "Từ 20 - 30m²", to: "?dt=20-30" },
-  { label: "Từ 30 - 50m²", to: "?dt=30-50" },
-  { label: "Từ 50 - 70m²", to: "?dt=50-70" },
-  { label: "Từ 70 - 90m²", to: "?dt=70-90" },
-  { label: "Trên 90m²", to: "?dt=90-" },
+  { label: "Dưới 20 m²", to: "danh-sach?areaM2=20&page=1" },
+  { label: "Từ 20 - 30m²", to: "danh-sach?areaM2=30&page=1" },
+  { label: "Từ 30 - 50m²", to: "danh-sach?areaM2=50&page=1" },
+  { label: "Từ 50 - 70m²", to: "danh-sach?areaM2=70&page=1" },
+  { label: "Từ 70 - 90m²", to: "danh-sach?areaM2=90&page=1" },
+  { label: "Trên 90m²", to: "danh-sach?areaM2=500&page=1" },
 ];
 
 export const LISTINGS: Listing[] = [

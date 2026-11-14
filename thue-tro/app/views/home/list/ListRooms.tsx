@@ -4,12 +4,12 @@ import ListingRowCard from "app/components/layout/home/footer/ListingRowCard";
 import Pagination from "app/components/layout/home/footer/Pagination";
 import NewListings from "app/components/layout/home/NewListings";
 import PriceAreaFilter from "app/components/layout/home/PriceAreaFilter";
-import { AREA_FILTERS, NEW_LISTINGS, PRICE_FILTERS } from "app/data/mock";
+import { AREA_FILTERS, PRICE_FILTERS } from "app/data/mock";
 import { useFetch } from "app/hooks/useFetch";
 import type { DataList } from "app/models/home/response.model";
 import { useLocationStore } from "app/stores/location.store";
 import type { Rooms } from "app/types/prisma-models";
-import { useParams, useSearchParams } from "react-router";
+import { useSearchParams } from "react-router";
 
 export default function ListRooms() {
     const [searchParams, setSearchParams] = useSearchParams();
@@ -19,6 +19,7 @@ export default function ListRooms() {
     const minPrice = searchParams.get("minPrice")?? "0"
     const province = searchParams.get("province");
     const ward = searchParams.get("ward");
+    const areaM2 = searchParams.get("areaM2");
 
     const { data, isLoading } = useFetch<DataList<Rooms>>({
         url: `/rooms/by-price?pageIndex=${page}&minPrice=${minPrice}&maxPrice=${maxPrice}&province=${province?? ""}&ward=${ward?? ""}`,
@@ -29,6 +30,7 @@ export default function ListRooms() {
             maxPrice,
             ward?? "",
             province?? "",
+            areaM2?? ""
         ],
     });
 

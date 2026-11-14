@@ -56,7 +56,7 @@ export const provincesColumns: DynamicColumn<Provinces>[] = [
         align: "center",
         width: "180px",
         render: (province) => (
-            <span className="text-xs text-neutral-500">
+            <span className="text-xs text-neutral-500 text-center">
                 {province.center_lat ?? "-"}, {province.center_lng ?? "-"}
             </span>
         ),

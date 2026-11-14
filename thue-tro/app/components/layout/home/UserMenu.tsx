@@ -1,6 +1,18 @@
 import { LOGIN_ROUTE } from "app/const/router";
-import { clearSession, getSession } from "app/helper/auth-storage";
-import { ChevronDown, FolderOpen, Heart, LogIn, LogOut, User } from "lucide-react";
+import {
+  clearSession,
+  decodeAccessToken,
+  getSession,
+} from "app/helper/auth-storage";
+import { clientLoader } from "app/routes/admin";
+import {
+  ChevronDown,
+  FolderOpen,
+  Heart,
+  LogIn,
+  LogOut,
+  User,
+} from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 
@@ -12,6 +24,11 @@ export default function UserMenu({ avatarUrl }: UserMenuProps) {
   const navigate = useNavigate();
   const authenSession = getSession();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const payload = authenSession?.access_token
+    ? decodeAccessToken(authenSession.access_token)
+    : null;
+
+  const isAdmin = payload?.role === "admin";
 
   const handleLogout = () => {
     clearSession();
@@ -35,13 +52,15 @@ export default function UserMenu({ avatarUrl }: UserMenuProps) {
       </a>
       {authenSession ? (
         <div className="flex gap-3 items-center">
-          <a
-            href="/admin"
-            className="flex items-center gap-1.5 hover:text-[#f4511e]"
-          >
-            <FolderOpen size={18} />
-            <span>Quản lý</span>
-          </a>
+          {isAdmin && (
+            <a
+              href="/admin"
+              className="flex items-center gap-1.5 hover:text-[#f4511e]"
+            >
+              <FolderOpen size={18} />
+              <span>Quản lý</span>
+            </a>
+          )}
 
           {/* User dropdown */}
           <div className="relative">

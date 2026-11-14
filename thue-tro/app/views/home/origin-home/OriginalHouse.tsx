@@ -33,7 +33,7 @@ export default function RoomsView() {
   const [tab, setTab] = useState<TabKey>("suggested");
   const page = Number(searchParams.get("page")) || 1;
   const { data, isLoading, error, refetch } = useFetch<DataList<Rooms>>({
-    url: `/rooms?pageIndex=${page}`,
+    url: `/rooms?pageIndex=${page}&category=nha-nguyen-can`,
     key: ["/rooms", searchParams.get("page")?? ""]
   });
 

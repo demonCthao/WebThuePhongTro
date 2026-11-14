@@ -10,6 +10,11 @@ export default [
     route("phong-tro", "routes/home/RentalRoomRoute.tsx"),
     route("bang-gia-dich-vu", "routes/home/PricingRoute.tsx"),
     route("phong-tro/:id", "routes/home/ListingDetailRoute.tsx"),
+    route("can-ho-chung-cu", "routes/home/ApartmentUnitRoute.tsx"),
+    route("can-ho-mini", "routes/home/MiniApartmentRoute.tsx"),
+    route("can-ho-dich-vu", "routes/home/ServicedApartmentRoute.tsx"),
+    route("o-ghep", "routes/home/RoommateSharingRoute.tsx"),
+    route("mat-bang", "routes/home/FloorPlanRoute.tsx"),
   ]),
 
   // Khu vực quản trị: có tiền tố /admin để không trùng "/" với layout home
