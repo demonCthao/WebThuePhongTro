@@ -5,7 +5,7 @@ import { Outlet } from "react-router";
 export default function AdminLayout() {
   const handleLogout = () => {
     clearSession();
-    window.location.href = "/dang-nhap-hoac-dang-ky";
+    window.location.href = "/dang-nhap-hoac-dang-ky?redirect=admin";
   };
   return (
     <div className="admin-layout">

@@ -6,7 +6,7 @@ export function clientLoader() {
   const session = getSession();
 
   if (!session?.access_token) {
-    return redirect("/dang-nhap-hoac-dang-ky");
+    return redirect("/dang-nhap-hoac-dang-ky?redirect=admin");
   }
 
   const payload = decodeAccessToken(session.access_token);

@@ -49,14 +49,24 @@ export const api = ky.create({
 
                 if (
                     response.status === 401 &&
-                    !url.pathname.includes('/dang-nhap-hoac-dang-ky')
+                    !url.pathname.includes("/dang-nhap-hoac-dang-ky") &&
+                    !window.location.pathname.includes("/dang-nhap-hoac-dang-ky")
                 ) {
-                    if (!window.location.pathname.includes('/dang-nhap-hoac-dang-ky')) {
-                        localStorage.clear();
-                        window.location.href = '/dang-nhap-hoac-dang-ky';
-                    }
+                    localStorage.clear();
+
+                    const currentUrl =
+                        window.location.pathname + window.location.search;
+
+                    const loginUrl = new URL(
+                        "/dang-nhap-hoac-dang-ky",
+                        window.location.origin,
+                    );
+
+                    loginUrl.searchParams.set("redirect", currentUrl);
+
+                    window.location.href = loginUrl.toString();
                 }
-            }
+            },
         ],
 
         beforeError: [
