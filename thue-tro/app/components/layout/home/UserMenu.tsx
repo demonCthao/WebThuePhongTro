@@ -44,7 +44,7 @@ export default function UserMenu({ avatarUrl }: UserMenuProps) {
   return (
     <div className="flex items-center gap-3">
       <a
-        href="/tin-da-luu"
+        href={authenSession? "/tin-da-luu": "/dang-nhap-hoac-dang-ky?redirect=/tin-da-luu" }
         className="flex items-center gap-1.5 hover:text-[#f4511e]"
       >
         <Heart size={18} />

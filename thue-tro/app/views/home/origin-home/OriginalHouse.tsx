@@ -1,3 +1,4 @@
+import Loading from "app/components/common/Loading";
 import ContentLayout from "app/components/layout/home/ContentLayout";
 import ListingRowCard from "app/components/layout/home/footer/ListingRowCard";
 import Pagination from "app/components/layout/home/footer/Pagination";
@@ -11,7 +12,7 @@ import {
   AREA_FILTERS,
   LISTINGS,
   PRICE_FILTERS,
-  PROVINCE_OPTIONS
+  PROVINCE_OPTIONS,
 } from "app/data/mock";
 import { useFetch } from "app/hooks/useFetch";
 import type { DataList } from "app/models/home/response.model";
@@ -28,15 +29,21 @@ const TABS: TabItem<TabKey>[] = [
   { key: "video", label: "Có video" },
 ];
 
+const category = "nha-nguyen-can";
+
 export default function RoomsView() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [tab, setTab] = useState<TabKey>("suggested");
   const page = Number(searchParams.get("page")) || 1;
   const { data, isLoading, error, refetch } = useFetch<DataList<Rooms>>({
-    url: `/rooms?pageIndex=${page}&category=nha-nguyen-can`,
-    key: ["/rooms", searchParams.get("page")?? ""]
+    url: `/rooms?pageIndex=${page}&category=${category}`,
+    key: ["/rooms", searchParams.get("page") ?? ""],
   });
 
+  const { data: dataRecommended } = useFetch<Rooms[]>({
+    url: `/rooms/recommended?category=${category}`,
+    key: ["/rooms/recommended"],
+  });
 
   const listings =
     tab === "video" ? LISTINGS.filter((l) => l.hasVideo) : LISTINGS;
@@ -50,19 +57,20 @@ export default function RoomsView() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  if (isLoading) {
+    return <Loading />;
+  }
+
   return (
     <ContentLayout
       main={
         <div className="space-y-5">
           <PageHeading title="Cho Thuê Nhà Nguyên Căn, Giá Rẻ, Chính Chủ, Mới Nhất 2026" />
-          <ProvinceList
-            prefix="Cho thuê nhà"
-            provinces={PROVINCE_OPTIONS}
-          />
+          <ProvinceList prefix="Cho thuê nhà" provinces={PROVINCE_OPTIONS} />
           <Tabs items={TABS} value={tab} onChange={setTab} />
           <div className="space-y-5">
-            {listings.map((listing) => (
-              <ListingCard key={listing.id} listing={listing} />
+            {dataRecommended?.map((recommended) => (
+              <ListingCard key={recommended?.id} room={recommended} />
             ))}
           </div>
           <div className="space-y-4">
@@ -72,7 +80,7 @@ export default function RoomsView() {
           </div>
           <Pagination
             page={page}
-            totalPages={data?.totalPages?? 1}
+            totalPages={data?.totalPages ?? 1}
             onChange={handlePageChange}
           />
         </div>

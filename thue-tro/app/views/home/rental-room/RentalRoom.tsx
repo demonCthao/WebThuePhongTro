@@ -1,3 +1,4 @@
+import Loading from "app/components/common/Loading";
 import ContentLayout from "app/components/layout/home/ContentLayout";
 import ListingRowCard from "app/components/layout/home/footer/ListingRowCard";
 import Pagination from "app/components/layout/home/footer/Pagination";
@@ -7,12 +8,7 @@ import PageHeading from "app/components/layout/home/PageHeading";
 import PriceAreaFilter from "app/components/layout/home/PriceAreaFilter";
 import ProvinceList from "app/components/layout/home/ProvinceList";
 import Tabs, { type TabItem } from "app/components/layout/home/Tabs";
-import {
-    AREA_FILTERS,
-    LISTINGS,
-    PRICE_FILTERS,
-    PROVINCE_OPTIONS
-} from "app/data/mock";
+import { AREA_FILTERS, PRICE_FILTERS, PROVINCE_OPTIONS } from "app/data/mock";
 import { useFetch } from "app/hooks/useFetch";
 import type { DataList } from "app/models/home/response.model";
 import type { Rooms } from "app/types/prisma-models";
@@ -23,22 +19,28 @@ const TOTAL_PAGES = 12; // demo, lấy từ API khi có backend
 type TabKey = "suggested" | "latest" | "video";
 
 const TABS: TabItem<TabKey>[] = [
-  { key: "suggested", label: "Đề xuất" },
-  { key: "latest", label: "Mới đăng" },
-  { key: "video", label: "Có video" },
+    { key: "suggested", label: "Đề xuất" },
+    { key: "latest", label: "Mới đăng" },
+    { key: "video", label: "Có video" },
 ];
+
+const category = "phong-tro";
 
 export default function RentalRoom() {
     const [searchParams, setSearchParams] = useSearchParams();
     const [tab, setTab] = useState<TabKey>("suggested");
     const page = Number(searchParams.get("page")) || 1;
     const { data, isLoading, error, refetch } = useFetch<DataList<Rooms>>({
-        url: `/rooms?pageIndex=${page}&category=phong-tro`,
+        url: `/rooms?pageIndex=${page}&category=${category}`,
         key: ["/rooms", searchParams.get("page") ?? ""],
     });
 
-    const listings =
-        tab === "video" ? LISTINGS.filter((l) => l.hasVideo) : LISTINGS;
+    const { data: dataRecommended, isLoading: isLoadingRecommended } = useFetch<
+        Rooms[]
+    >({
+        url: `/rooms/recommended?category=${category}`,
+        key: ["/rooms/recommended"],
+    });
 
     // Giữ nguyên các query khác (?gia=, ?dt=...), chỉ đổi page
     const handlePageChange = (next: number) => {
@@ -48,6 +50,10 @@ export default function RentalRoom() {
         });
         window.scrollTo({ top: 0, behavior: "smooth" });
     };
+
+    if (isLoading) {
+        return <Loading />;
+    }
 
     return (
         <ContentLayout
@@ -60,8 +66,11 @@ export default function RentalRoom() {
                     />
                     <Tabs items={TABS} value={tab} onChange={setTab} />
                     <div className="space-y-5">
-                        {listings.map((listing) => (
-                            <ListingCard key={listing.id} listing={listing} />
+                        {dataRecommended?.map((recommended) => (
+                            <ListingCard
+                                key={recommended?.id}
+                                room={recommended}
+                            />
                         ))}
                     </div>
                     <div className="space-y-4">

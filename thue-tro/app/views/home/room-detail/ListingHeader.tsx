@@ -1,13 +1,12 @@
-import { PLANS, type Plan } from "app/data/mock";
-import type { ListingDetail } from "app/models/home/listing";
+import { LIST_ROOMS_ROUTE } from "app/const/router";
+import { PLANS } from "app/data/mock";
+import { cn } from "app/helper/cn";
+import { formatDate } from "app/helper/date";
+import { formatPrice } from "app/helper/price";
+import type { Rooms } from "app/types/prisma-models";
 import type { ReactNode } from "react";
 import { Link } from "react-router";
 import VipBadge from "./VipBadge";
-import { cn } from "app/helper/cn";
-import type { Rooms } from "app/types/prisma-models";
-import { formatPrice } from "app/helper/price";
-import { formatDate } from "app/helper/date";
-import { LIST_ROOMS_ROUTE } from "app/const/router";
 
 interface ListingHeaderProps {
   detail?: Rooms;

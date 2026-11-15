@@ -1,6 +1,8 @@
+import { twMerge } from "tailwind-merge";
+import { clsx } from "clsx";
 type ClassValue = string | false | null | undefined;
 
 // Ghép class có điều kiện: cn("a", isActive && "b")
-export function cn(...classes: ClassValue[]) {
-  return classes.filter(Boolean).join(" ");
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
 }

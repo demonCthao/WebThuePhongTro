@@ -34,8 +34,8 @@ export default function TextField({
           aria-invalid={Boolean(error)}
           aria-describedby={error ? errorId : undefined}
           className={cn(
-            "peer h-12 w-full rounded-xl border bg-white px-3 py-0",
-            "text-base leading-normal text-neutral-900 outline-none",
+            "peer h-10 w-full rounded-lg border bg-white px-3 py-0",
+            "text-sm leading-normal text-neutral-900 outline-none",
             "transition-colors duration-200",
             "placeholder:text-transparent",
             error
@@ -49,7 +49,7 @@ export default function TextField({
           className={cn(
             "pointer-events-none absolute left-3 top-1/2 z-10",
             "-translate-y-1/2 origin-left",
-            "bg-white px-1 text-base text-neutral-500",
+            "bg-white px-1 text-sm text-neutral-500",
             "transition-all duration-200",
 
             // Focus
@@ -69,11 +69,7 @@ export default function TextField({
       </div>
 
       {error && (
-        <p
-          id={errorId}
-          role="alert"
-          className="mt-1.5 px-1 text-sm text-red-600"
-        >
+        <p id={errorId} role="alert" className="mt-1 px-1 text-xs text-red-600">
           {error}
         </p>
       )}

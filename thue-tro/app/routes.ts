@@ -15,6 +15,7 @@ export default [
     route("can-ho-dich-vu", "routes/home/ServicedApartmentRoute.tsx"),
     route("o-ghep", "routes/home/RoommateSharingRoute.tsx"),
     route("mat-bang", "routes/home/FloorPlanRoute.tsx"),
+    route("tin-da-luu", "routes/home/SavedPostsRoute.tsx"),
   ]),
 
   // Khu vực quản trị: có tiền tố /admin để không trùng "/" với layout home

@@ -8,10 +8,11 @@ interface ModalProps {
   onClose: () => void;
   children: ReactNode;
   footer?: ReactNode; // cố định ở đáy, thân modal cuộn riêng
-  size?: "md" | "lg" | "xl" | "2xl";
+  size?: "sm" | "md" | "lg" | "xl" | "2xl";
 }
 
 const modalSizeClasses = {
+  sm: "w-[min(400px,92vw)]",
   md: "w-[min(480px,92vw)]",
   lg: "w-[min(600px,94vw)]",
   xl: "w-[min(800px,96vw)]",

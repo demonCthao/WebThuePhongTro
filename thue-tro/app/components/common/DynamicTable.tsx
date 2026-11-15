@@ -10,7 +10,6 @@ import {
 } from "lucide-react";
 import { cn } from "app/helper/cn";
 
-
 // ==========================================
 // TYPES
 // ==========================================
@@ -160,6 +159,7 @@ export const DynamicTable = <TData extends object>({
     getRowId,
 }: DynamicTableProps<TData>) => {
     const [internalPage, setInternalPage] = React.useState(1);
+
     const [internalPageSize, setInternalPageSize] =
         React.useState(initialPageSize);
 
@@ -228,9 +228,17 @@ export const DynamicTable = <TData extends object>({
     };
 
     return (
-        <div className="flex h-full min-h-0 w-full flex-col overflow-hidden rounded-2xl border border-neutral-100 bg-white shadow-sm">
-            {/* HEADER */}
-            <div className="flex shrink-0 items-center justify-between border-b border-neutral-100 px-5 py-5 sm:px-6">
+        <div
+            className={cn(
+                "flex w-full min-h-0 min-w-0 flex-1 flex-col",
+                "overflow-hidden rounded-2xl",
+                "border border-neutral-100 bg-white shadow-sm",
+            )}
+        >
+            {/* ======================================
+                HEADER
+            ====================================== */}
+            <div className="flex shrink-0 items-center justify-between border-b border-neutral-100 px-5 py-4 sm:px-6">
                 <div className="min-w-0">
                     <h2 className="truncate text-lg font-semibold tracking-tight text-neutral-800">
                         {title}
@@ -242,10 +250,19 @@ export const DynamicTable = <TData extends object>({
                 </div>
             </div>
 
-            {/* TABLE CONTAINER */}
-            <div className="min-h-0 min-w-0 flex-1 overflow-auto">
+            {/* ======================================
+                TABLE CONTAINER
+                Chỉ khu vực này được phép scroll
+            ====================================== */}
+            <div
+                className={cn(
+                    "relative min-h-0 min-w-0 flex-1",
+                    "overflow-auto",
+                    "overscroll-contain",
+                )}
+            >
                 <Table className="w-full min-w-[800px] border-separate border-spacing-0">
-                    {/* HEADER */}
+                    {/* TABLE HEADER */}
                     <TableHeader className="sticky top-0 z-20 bg-[#fafafa]">
                         <TableRow className="hover:bg-transparent">
                             <TableHead className="sticky left-0 z-30 w-16 min-w-16 border-b border-neutral-100 bg-[#fafafa] text-center">
@@ -259,7 +276,7 @@ export const DynamicTable = <TData extends object>({
                                     key={`${String(column.key)}-${index}`}
                                     style={{ width: column.width }}
                                     className={cn(
-                                        "border-b border-neutral-100 bg-[#fafafa] whitespace-nowrap",
+                                        "whitespace-nowrap border-b border-neutral-100 bg-[#fafafa]",
                                         getAlignment(column.align),
                                     )}
                                 >
@@ -279,7 +296,7 @@ export const DynamicTable = <TData extends object>({
                         </TableRow>
                     </TableHeader>
 
-                    {/* BODY */}
+                    {/* TABLE BODY */}
                     <TableBody>
                         {isLoading ? (
                             Array.from({ length: pageSize }).map((_, index) => (
@@ -420,8 +437,10 @@ export const DynamicTable = <TData extends object>({
                 </Table>
             </div>
 
-            {/* PAGINATION */}
-            <div className="flex shrink-0 flex-col gap-3 border-t border-neutral-100 bg-white px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+            {/* ======================================
+                PAGINATION
+            ====================================== */}
+            <div className="flex shrink-0 flex-col gap-3 border-t border-neutral-100 bg-white px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-6">
                 <p className="text-xs text-neutral-500">
                     Hiển thị{" "}
                     <span className="font-medium text-neutral-800">

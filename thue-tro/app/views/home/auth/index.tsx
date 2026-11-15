@@ -15,6 +15,7 @@ export default function AuthView() {
   const [searchParams] = useSearchParams();
   const [authView, setAuthView] = useState<AuthView>({mode: "login"})
   const redirectTo = safeRedirectPath(searchParams.get("redirect"));
+  console.log("🚀 ~ AuthView ~ redirectTo:", redirectTo)
 
   return (
     <div className="bg-[#fdf3ed] px-4 py-12">

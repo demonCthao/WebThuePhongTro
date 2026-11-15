@@ -1,3 +1,4 @@
+import Loading from "app/components/common/Loading";
 import ContentLayout from "app/components/layout/home/ContentLayout";
 import ListingRowCard from "app/components/layout/home/footer/ListingRowCard";
 import Pagination from "app/components/layout/home/footer/Pagination";
@@ -28,17 +29,21 @@ const TABS: TabItem<TabKey>[] = [
     { key: "video", label: "Có video" },
 ];
 
+const category = "o-ghep";
+
 export default function RoommateSharing() {
     const [searchParams, setSearchParams] = useSearchParams();
     const [tab, setTab] = useState<TabKey>("suggested");
     const page = Number(searchParams.get("page")) || 1;
     const { data, isLoading, error, refetch } = useFetch<DataList<Rooms>>({
-        url: `/rooms?pageIndex=${page}&category=o-ghep`,
+        url: `/rooms?pageIndex=${page}&category=${category}`,
         key: ["/rooms", searchParams.get("page") ?? ""],
     });
 
-    const listings =
-        tab === "video" ? LISTINGS.filter((l) => l.hasVideo) : LISTINGS;
+    const { data: dataRecommended } = useFetch<Rooms[]>({
+        url: `/rooms/recommended?category=${category}`,
+        key: ["/rooms/recommended"],
+    });
 
     // Giữ nguyên các query khác (?gia=, ?dt=...), chỉ đổi page
     const handlePageChange = (next: number) => {
@@ -48,6 +53,10 @@ export default function RoommateSharing() {
         });
         window.scrollTo({ top: 0, behavior: "smooth" });
     };
+
+    if (isLoading) {
+        return <Loading />;
+    }
 
     return (
         <ContentLayout
@@ -60,8 +69,11 @@ export default function RoommateSharing() {
                     />
                     <Tabs items={TABS} value={tab} onChange={setTab} />
                     <div className="space-y-5">
-                        {listings.map((listing) => (
-                            <ListingCard key={listing.id} listing={listing} />
+                        {dataRecommended?.map((recommended) => (
+                            <ListingCard
+                                key={recommended?.id}
+                                room={recommended}
+                            />
                         ))}
                     </div>
                     <div className="space-y-4">

@@ -12,12 +12,15 @@ import ContactSection from "./ContactSection";
 import DetailSection from "./DetailSection";
 import ListingHeader from "./ListingHeader";
 import MapEmbed from "./MapEmbed";
+import { useState } from "react";
+import BookingButton from "./BookingButton";
 
 interface ListingDetailViewProps {
   id: string;
 }
 
 export default function ListingDetailView({ id }: ListingDetailViewProps) {
+  const [isBookingOpen, setIsBookingOpen] = useState(false);
   const { data, isLoading } = useFetch<Rooms>({
     url: `/rooms/${id}`,
     key: ["roon-id", id],
@@ -35,16 +38,16 @@ export default function ListingDetailView({ id }: ListingDetailViewProps) {
             [
               {
                 label: data?.provinces?.full_name,
-                to: `${LIST_ROOMS_ROUTE}?province=${data?.provinces?.code}`
+                to: `${LIST_ROOMS_ROUTE}?province=${data?.provinces?.code}`,
               },
               {
                 label: data?.wards?.full_name,
-                to: `${LIST_ROOMS_ROUTE}?ward=${data?.wards?.code}`
+                to: `${LIST_ROOMS_ROUTE}?ward=${data?.wards?.code}`,
               },
               {
                 label: data?.title,
-                to: ""
-              }
+                to: "",
+              },
             ] as BreadcrumbItem[]
           }
         />
@@ -99,14 +102,32 @@ export default function ListingDetailView({ id }: ListingDetailViewProps) {
 
           <aside className="lg:sticky lg:top-4">
             <AuthorCard
-              author={{
-                name: data?.contact_name,
-                phone: data?.contact_phone,
-                online: true
-              } as AuthorProfile}
-              title={data?.title?? ""}
-              listingCode={data?.id?? ""}
+              author={
+                {
+                  name: data?.contact_name,
+                  phone: data?.contact_phone,
+                  online: true,
+                } as AuthorProfile
+              }
+              title={data?.title ?? ""}
+              listingCode={data?.id ?? ""}
             />
+            <Card className="space-y-3 p-4">
+              <div>
+                <h3 className="text-sm font-semibold text-neutral-800">
+                  Muốn xem phòng trực tiếp?
+                </h3>
+                <p className="mt-1 text-xs leading-5 text-neutral-500">
+                  Đặt lịch hẹn để chủ phòng sắp xếp thời gian đón bạn.
+                </p>
+              </div>
+
+              <BookingButton onClick={() => setIsBookingOpen(true)} />
+
+              <p className="text-center text-[11px] text-neutral-400">
+                Miễn phí đặt lịch xem phòng
+              </p>
+            </Card>
           </aside>
         </div>
       </div>

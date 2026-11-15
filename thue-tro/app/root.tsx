@@ -5,26 +5,56 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
-} from 'react-router';
+} from "react-router";
 
-import type { Route } from './+types/root';
+import type { Route } from "./+types/root";
 
-import { QueryProvider } from './providers/query-provider';
+import { useEffect } from "react";
+import { Toaster, toast } from "sonner";
 
-import './app.css';
+import { QueryProvider } from "./providers/query-provider";
+
+import "./app.css";
+import { useNotificationStore } from "./stores/notification.store";
 
 export const links: Route.LinksFunction = () => [
-  { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
+  { rel: "preconnect", href: "https://fonts.googleapis.com" },
   {
-    rel: 'preconnect',
-    href: 'https://fonts.gstatic.com',
-    crossOrigin: 'anonymous',
+    rel: "preconnect",
+    href: "https://fonts.gstatic.com",
+    crossOrigin: "anonymous",
   },
   {
-    rel: 'stylesheet',
-    href: 'https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap',
+    rel: "stylesheet",
+    href: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap",
   },
 ];
+
+const baseStyle: React.CSSProperties = {
+  background: "#1a1a1a",
+  border: "1px solid rgba(255,255,255,0.1)",
+  color: "#fff",
+};
+
+const styles = {
+  success: {
+    ...baseStyle,
+    "--normal-border": "#10b981",
+    "--normal-text": "#10b981",
+  } as React.CSSProperties,
+
+  warning: {
+    ...baseStyle,
+    "--normal-border": "#f59e0b",
+    "--normal-text": "#f59e0b",
+  } as React.CSSProperties,
+
+  error: {
+    ...baseStyle,
+    "--normal-border": "#ef4444",
+    "--normal-text": "#ef4444",
+  } as React.CSSProperties,
+};
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -35,8 +65,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
+
       <body>
         {children}
+
+        <Toaster theme="dark" position="top-center" closeButton richColors />
+
         <ScrollRestoration />
         <Scripts />
       </body>
@@ -44,24 +78,93 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
+// Theo dõi và hiển thị notification từ Zustand
+function NotificationListener() {
+  const notification = useNotificationStore();
+
+  useEffect(() => {
+    if (!notification.open || !notification.message) return;
+
+    const baseStyle: React.CSSProperties = {
+      background: "#1a1a1a",
+      border: "1px solid rgba(255,255,255,0.1)",
+      color: "#fff",
+    };
+
+    const style = {
+      success: {
+        ...baseStyle,
+        "--normal-border": "#10b981",
+        "--normal-text": "#10b981",
+      },
+      warning: {
+        ...baseStyle,
+        "--normal-border": "#f59e0b",
+        "--normal-text": "#f59e0b",
+      },
+      error: {
+        ...baseStyle,
+        "--normal-border": "#ef4444",
+        "--normal-text": "#ef4444",
+      },
+    } as React.CSSProperties;
+
+    switch (notification.type) {
+      case "success":
+        toast.success(notification.message, {
+          style: styles.success,
+        });
+        break;
+
+      case "warning":
+        toast.warning(notification.message, {
+          style: styles.warning,
+        });
+        break;
+
+      case "error":
+        toast.error(notification.message, {
+          style: styles.error,
+        });
+        break;
+
+      default:
+        return;
+    }
+
+    const timer = setTimeout(() => {
+      notification.updateState({
+        message: "",
+        open: false,
+        type: "",
+      });
+    }, 2500);
+
+    return () => clearTimeout(timer);
+  }, [notification.open, notification.message, notification.type]);
+
+  return null;
+}
+
 export default function App() {
   return (
     <QueryProvider>
+      <NotificationListener />
       <Outlet />
     </QueryProvider>
   );
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
-  let message = 'Oops!';
-  let details = 'An unexpected error occurred.';
+  let message = "Oops!";
+  let details = "An unexpected error occurred.";
   let stack: string | undefined;
 
   if (isRouteErrorResponse(error)) {
-    message = error.status === 404 ? '404' : 'Error';
+    message = error.status === 404 ? "404" : "Error";
     details =
       error.status === 404
-        ? 'The requested page could not be found.'
+        ? "The requested page could not be found."
         : error.statusText || details;
   } else if (import.meta.env.DEV && error && error instanceof Error) {
     details = error.message;
@@ -72,6 +175,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
     <main className="pt-16 p-4 container mx-auto">
       <h1>{message}</h1>
       <p>{details}</p>
+
       {stack && (
         <pre className="w-full p-4 overflow-x-auto">
           <code>{stack}</code>

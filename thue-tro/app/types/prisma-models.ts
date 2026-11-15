@@ -459,3 +459,12 @@ export interface LoginDto {
   username: string;
   password: string;
 }
+
+export interface RoomLike {
+  user_id: string;
+  room_id: string;
+  created_at: string;
+  rooms: Rooms;
+}
+
+export type RoomLikeList = RoomLike[];

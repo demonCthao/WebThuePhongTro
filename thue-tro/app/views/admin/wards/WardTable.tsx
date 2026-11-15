@@ -1,5 +1,24 @@
 import type { DynamicColumn } from "app/components/common/DynamicTable";
-import type { Wards } from "app/types/prisma-models";
+import { cn } from "app/helper/cn";
+import type { Wards, WardsWardType } from "app/types/prisma-models";
+
+const wardTypeStyles: Record<
+    WardsWardType,
+    { label: string; className: string }
+> = {
+    ward: {
+        label: "Phường",
+        className: "bg-blue-50 text-blue-600",
+    },
+    commune: {
+        label: "Xã",
+        className: "bg-green-50 text-green-600",
+    },
+    special_zone: {
+        label: "Thị trấn",
+        className: "bg-orange-50 text-orange-600",
+    },
+};
 
 export const wardsColumns: DynamicColumn<Wards>[] = [
     {
@@ -33,11 +52,19 @@ export const wardsColumns: DynamicColumn<Wards>[] = [
         key: "ward_type",
         title: "Loại",
         align: "center",
-        render: (ward) => (
-            <span className="rounded-full bg-blue-50 px-2.5 py-1 text-xs font-medium text-blue-600">
-                {ward.ward_type === "ward" ? "Phường" : "Xã"}
-            </span>
-        ),
+        render: (ward) => {
+            const type = wardTypeStyles[ward.ward_type];
+            return (
+                <span
+                    className={cn(
+                        "rounded-full px-2.5 py-1 text-xs font-medium",
+                        type.className,
+                    )}
+                >
+                    {type.label}
+                </span>
+            );
+        },
     },
     {
         key: "is_active",

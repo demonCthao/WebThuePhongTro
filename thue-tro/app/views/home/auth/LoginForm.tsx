@@ -25,6 +25,7 @@ interface LoginFormProps {
 }
 
 export default function LoginForm({ redirectTo }: LoginFormProps) {
+  console.log("🚀 ~ LoginForm ~ redirectTo:", redirectTo)
   const navigate = useNavigate();
   const { search } = useLocation();
   const { values, errors, setField, validateField, validateAll } =
@@ -37,12 +38,10 @@ export default function LoginForm({ redirectTo }: LoginFormProps) {
     method: "post",
     options: {
       onSuccess: (data: AuthSession) => {
-        console.log("🚀 ~ LoginForm ~ data:", data)
         saveSession(data);
         navigate(redirectTo);
       },
       onError: (error: ApiError) => {
-        console.log("🚀 ~ LoginForm ~ error:", error)
         setFormError(error.message?? "");
       },
     },
@@ -93,7 +92,7 @@ export default function LoginForm({ redirectTo }: LoginFormProps) {
       <div className="-mt-1 text-right">
         <Link
           to="/quen-mat-khau"
-          className="text-base text-[#1a5fd1] underline underline-offset-2 hover:no-underline"
+          className="text-sm text-[#1a5fd1] underline underline-offset-2 hover:no-underline"
         >
           Bạn quên mật khẩu?
         </Link>
@@ -112,14 +111,14 @@ export default function LoginForm({ redirectTo }: LoginFormProps) {
         Đăng nhập
       </Button>
 
-      <p className="pt-1 text-center text-lg text-neutral-900">
-        Bạn chưa có tài khoản?{" "}
+      <p className="pt-1 text-center text-sm text-neutral-900">
+        Bạn chưa có tài khoản?
         <Link
           to={{ pathname: "/dang-ky", search }}
           className="text-[#1a5fd1] underline underline-offset-2 hover:no-underline"
         >
           Đăng ký
-        </Link>{" "}
+        </Link>
         tại đây
       </p>
     </form>

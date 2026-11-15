@@ -4,7 +4,7 @@ import { api } from "app/configs/ky-config";
 import { ApiError, type ApiErrorData, type ApiResponse } from "app/types/api-error";
 import { HTTPError } from "ky";
 
-type Method = "get" | "post" | "put" | "delete"
+type Method = "get" | "post" | "put" | "delete" | "patch"
 
 type ResponseType = "json" | "blob";
 
