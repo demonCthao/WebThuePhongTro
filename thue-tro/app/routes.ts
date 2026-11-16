@@ -16,6 +16,7 @@ export default [
     route("o-ghep", "routes/home/RoommateSharingRoute.tsx"),
     route("mat-bang", "routes/home/FloorPlanRoute.tsx"),
     route("tin-da-luu", "routes/home/SavedPostsRoute.tsx"),
+    route("blog", "routes/home/BlogRoute.tsx"),
   ]),
 
   // Khu vực quản trị: có tiền tố /admin để không trùng "/" với layout home
@@ -25,5 +26,6 @@ export default [
     route("bai-dang", "routes/admin/RoomsRoute.tsx"),
     route("nguoi-dung", "routes/admin/UsersRoute.tsx"),
     route("phuong", "routes/admin/WardsRoute.tsx"),
+    route("blog", "routes/admin/BlogRoute.tsx"),
   ]),
 ] satisfies RouteConfig;
