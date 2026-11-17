@@ -30,9 +30,10 @@ export default function RentalRoom() {
     const [searchParams, setSearchParams] = useSearchParams();
     const [tab, setTab] = useState<TabKey>("suggested");
     const page = Number(searchParams.get("page")) || 1;
+    const queryString = searchParams.toString();
     const { data, isLoading, error, refetch } = useFetch<DataList<Rooms>>({
-        url: `/rooms?pageIndex=${page}&category=${category}`,
-        key: ["/rooms", searchParams.get("page") ?? ""],
+        url: `/rooms?pageIndex=${page}&category=${category}${queryString ? `&${queryString}` : ""}`,
+        key: ["/rooms", searchParams.get("page") ?? "", category],
     });
 
     const { data: dataRecommended, isLoading: isLoadingRecommended } = useFetch<

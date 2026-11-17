@@ -37,9 +37,6 @@ export default function Footer() {
               links={column.links}
             />
           ))}
-          <FooterSection title="Phương thức thanh toán">
-            <PaymentMethods />
-          </FooterSection>
           <FooterSection title="Theo dõi Phongtro123.com">
             <SocialLinks />
           </FooterSection>

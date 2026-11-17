@@ -28,13 +28,17 @@ export default function AuthView() {
 
         <p className="mt-9 text-sm leading-[21px] text-neutral-900">
           Qua việc đăng nhập hoặc tạo tài khoản, bạn đồng ý với các
+          &nbsp;
           <Link to="/quy-dinh-su-dung" className={linkClass}>
             quy định sử dụng
           </Link>
+          &nbsp;
           cũng như
+          &nbsp;
           <Link to="/chinh-sach-bao-mat" className={linkClass}>
             chính sách bảo mật
           </Link>
+          &nbsp;
           của chúng tôi
         </p>
         <p className="mt-4 text-sm text-neutral-900">Bản quyền © 2015 - {new Date().getFullYear()} Phongtro123.com</p>

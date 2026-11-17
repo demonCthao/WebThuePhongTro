@@ -363,22 +363,41 @@ export const PROVINCES: Province[] = [
 // value rỗng = "Tất cả"
 export const PRICE_OPTIONS: Option[] = [
   { value: "", label: "Tất cả" },
-  { value: "0-1", label: "Dưới 1 triệu" },
-  { value: "1-2", label: "1 - 2 triệu" },
-  { value: "2-3", label: "2 - 3 triệu" },
-  { value: "3-5", label: "3 - 5 triệu" },
-  { value: "5-7", label: "5 - 7 triệu" },
-  { value: "7-10", label: "7 - 10 triệu" },
-  { value: "10-15", label: "10 - 15 triệu" },
-  { value: "15-", label: "Trên 15 triệu" },
+  { value: "maxPrice=1000000&minPrice=0", label: "Dưới 1 triệu" },
+  { value: "maxPrice=2000000&minPrice=1000000", label: "1 - 2 triệu" },
+  { value: "maxPrice=3000000&minPrice=2000000", label: "2 - 3 triệu" },
+  { value: "maxPrice=5000000&minPrice=3000000", label: "3 - 5 triệu" },
+  { value: "maxPrice=7000000&minPrice=5000000", label: "5 - 7 triệu" },
+  { value: "maxPrice=10000000&minPrice=7000000", label: "7 - 10 triệu" },
+  { value: "maxPrice=15000000&minPrice=10000000", label: "10 - 15 triệu" },
+  { value: "minPrice=15000000", label: "Trên 15 triệu" },
 ];
 
 export const AREA_OPTIONS: Option[] = [
   { value: "", label: "Tất cả" },
-  { value: "0-20", label: "Dưới 20m²" },
-  { value: "20-30", label: "Từ 20m² - 30m²" },
-  { value: "30-50", label: "Từ 30m² - 50m²" },
-  { value: "50-70", label: "Từ 50m² - 70m²" },
-  { value: "70-90", label: "Từ 70m² - 90m²" },
+  { value: "20", label: "Dưới 20m²" },
+  { value: "30", label: "Từ 20m² - 30m²" },
+  { value: "50", label: "Từ 30m² - 50m²" },
+  { value: "70", label: "Từ 50m² - 70m²" },
+  { value: "90", label: "Từ 70m² - 90m²" },
   { value: "90-", label: "Trên 90m²" },
+];
+
+// amenities
+export const AMENITIES: Option[] = [
+  { value: "", label: "Tất cả" },
+  { value: "furnished", label: "Đầy đủ nội thất" },
+  { value: "loft", label: "Có gác" },
+  { value: "kitchen_shelf", label: "Có kệ bếp" },
+  { value: "air_conditioner", label: "Có máy lạnh" },
+  { value: "washing_machine", label: "Có máy giặt" },
+  { value: "fridge", label: "Có tủ lạnh" },
+  { value: "elevator", label: "Có thang máy" },
+  { value: "no_landlord", label: "Không chung chủ" },
+  { value: "free_hours", label: "Giờ giấc tự do" },
+  { value: "security_24h", label: "Có bảo vệ 24/24" },
+  { value: "basement_parking", label: "Có hầm để xe" },
+  { value: "private_wc", label: "Vệ sinh khép kín" },
+  { value: "balcony", label: "Có ban công" },
+  { value: "pet_allowed", label: "Cho nuôi thú cưng" },
 ];

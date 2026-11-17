@@ -110,17 +110,6 @@ export default function LoginForm({ redirectTo }: LoginFormProps) {
       <Button type="submit" loading={isPending}>
         Đăng nhập
       </Button>
-
-      <p className="pt-1 text-center text-sm text-neutral-900">
-        Bạn chưa có tài khoản?
-        <Link
-          to={{ pathname: "/dang-ky", search }}
-          className="text-[#1a5fd1] underline underline-offset-2 hover:no-underline"
-        >
-          Đăng ký
-        </Link>
-        tại đây
-      </p>
     </form>
   );
 }

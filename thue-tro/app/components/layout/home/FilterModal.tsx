@@ -1,12 +1,27 @@
 import { useEffect, useState, type ComponentType, type ReactNode } from "react";
 import { Building2, DoorOpen, House, Store, Users } from "lucide-react";
+
 import OptionChip from "app/components/common/OptionChip";
 import Modal from "app/components/common/Modal";
 import SelectField from "app/components/common/SelectField";
-import type { FilterValues } from "app/helper/filters";
-import { AREA_OPTIONS, CATEGORIES, PRICE_OPTIONS, PROVINCES, type Category, type Option } from "app/data/mock";
+import Button from "app/components/common/Button";
 
-const CATEGORY_ICONS: Record<Category["icon"], ComponentType<{ size?: number; strokeWidth?: number }>> = {
+import type { FilterValues } from "app/helper/filters";
+
+import {
+  AMENITIES,
+  AREA_OPTIONS,
+  CATEGORIES,
+  PRICE_OPTIONS,
+  PROVINCES,
+  type Category,
+  type Option,
+} from "app/data/mock";
+
+const CATEGORY_ICONS: Record<
+  Category["icon"],
+  ComponentType<{ size?: number; strokeWidth?: number }>
+> = {
   door: DoorOpen,
   house: House,
   users: Users,
@@ -17,32 +32,59 @@ const CATEGORY_ICONS: Record<Category["icon"], ComponentType<{ size?: number; st
 interface FilterModalProps {
   open: boolean;
   onClose: () => void;
-  initial: FilterValues; // bộ lọc đang áp dụng (lấy từ URL)
+  initial: FilterValues;
   onApply: (values: FilterValues) => void;
 }
 
-function FilterSection({ title, children }: { title: string; children: ReactNode }) {
+interface FilterSectionProps {
+  title: string;
+  children: ReactNode;
+}
+
+function FilterSection({ title, children }: FilterSectionProps) {
   return (
     <section className="mt-8 first:mt-0">
       <h3 className="mb-3 text-xl text-neutral-800">{title}</h3>
+
       {children}
     </section>
   );
+}
+
+interface ChipGroupProps {
+  options: Option[];
+  value: string[];
+  onChange: (value: string[]) => void;
+  single?: boolean;
 }
 
 function ChipGroup({
   options,
   value,
   onChange,
-}: {
-  options: Option[];
-  value: string;
-  onChange: (value: string) => void;
-}) {
+  single = true,
+}: ChipGroupProps) {
+  const handleClick = (optionValue: string) => {
+    if (single) {
+      onChange(value.includes(optionValue) ? [] : [optionValue]);
+      return;
+    }
+
+    const nextValue = value.includes(optionValue)
+      ? value.filter((item) => item !== optionValue)
+      : [...value, optionValue];
+
+    onChange(nextValue);
+  };
+
   return (
     <div className="flex flex-wrap gap-2.5">
       {options.map((option) => (
-        <OptionChip key={option.value} selected={value === option.value} onClick={() => onChange(option.value)}>
+        <OptionChip
+          key={option.value}
+          selected={value.includes(option.value)}
+          onClick={() => handleClick(option.value)}
+        >
           {option.label}
         </OptionChip>
       ))}
@@ -50,17 +92,70 @@ function ChipGroup({
   );
 }
 
-export default function FilterModal({ open, onClose, initial, onApply }: FilterModalProps) {
-  const [draft, setDraft] = useState(initial);
+// Chuyển khoảng giá thành giá trị option tương ứng
+function getPriceOptionValue(maxPrice: string, minPrice: string): string {
+  return (
+    PRICE_OPTIONS.find((option) => {
+      const params = new URLSearchParams(option.value);
 
-  // Mỗi lần mở lại thì nạp bộ lọc đang áp dụng; đóng mà không bấm "Áp dụng" thì bỏ thay đổi
+      return (
+        (params.get("maxPrice") ?? "") === maxPrice &&
+        (params.get("minPrice") ?? "") === minPrice
+      );
+    })?.value ?? ""
+  );
+}
+
+// Chuyển giá trị option thành maxPrice và minPrice
+function parsePriceOption(value: string) {
+  const params = new URLSearchParams(value);
+
+  return {
+    maxPrice: params.get("maxPrice") ?? "",
+    minPrice: params.get("minPrice") ?? "",
+  };
+}
+
+export default function FilterModal({
+  open,
+  onClose,
+  initial,
+  onApply,
+}: FilterModalProps) {
+  const [draft, setDraft] = useState<FilterValues>(initial);
+
+  // Đồng bộ dữ liệu filter khi mở modal
   useEffect(() => {
-    if (open) setDraft(initial);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [open]);
+    if (open) {
+      setDraft({
+        ...initial,
+        amenities: [...initial.amenities],
+      });
+    }
+  }, [open, initial]);
 
-  const update = (patch: Partial<FilterValues>) => setDraft((d) => ({ ...d, ...patch }));
-  const districts = PROVINCES.find((p) => p.value === draft.province)?.districts ?? [];
+  // Cập nhật từng phần filter
+  const update = (patch: Partial<FilterValues>) => {
+    setDraft((current) => ({
+      ...current,
+      ...patch,
+    }));
+  };
+
+  // Danh sách quận huyện theo tỉnh đã chọn
+  const districts =
+    PROVINCES.find((province) => province.value === draft.province)
+      ?.districts ?? [];
+
+  // Xử lý chọn khoảng giá
+  const handlePriceChange = (values: string[]) => {
+    update(parsePriceOption(values[0] ?? ""));
+  };
+
+  // Áp dụng bộ lọc
+  const handleApply = () => {
+    onApply(draft);
+  };
 
   return (
     <Modal
@@ -69,19 +164,21 @@ export default function FilterModal({ open, onClose, initial, onApply }: FilterM
       title="Bộ lọc"
       size="xl"
       footer={
-        <button
+        <Button
           type="button"
-          onClick={() => onApply(draft)}
-          className="h-11 w-full rounded-lg bg-[#ff5722] text-base font-medium text-white transition-[filter] hover:brightness-95"
+          onClick={handleApply}
+          className="h-11 text-base font-medium text-white transition-[filter] hover:brightness-95"
         >
           Áp dụng
-        </button>
+        </Button>
       }
     >
+      {/* Danh mục */}
       <FilterSection title="Danh mục cho thuê">
         <div className="flex flex-wrap gap-2.5">
           {CATEGORIES.map((category) => {
             const Icon = CATEGORY_ICONS[category.icon];
+
             return (
               <OptionChip
                 key={category.value}
@@ -96,6 +193,7 @@ export default function FilterModal({ open, onClose, initial, onApply }: FilterM
         </div>
       </FilterSection>
 
+      {/* Khu vực */}
       <FilterSection title="Lọc theo khu vực">
         <div className="grid grid-cols-2 gap-2 sm:grid-cols-[176px_176px]">
           <SelectField
@@ -103,9 +201,14 @@ export default function FilterModal({ open, onClose, initial, onApply }: FilterM
             placeholder="Tất cả"
             value={draft.province}
             options={PROVINCES}
-            // đổi tỉnh thì quận cũ không còn đúng nên xoá đi
-            onChange={(province) => update({ province, district: "" })}
+            onChange={(province) =>
+              update({
+                province,
+                district: "",
+              })
+            }
           />
+
           <SelectField
             label="Quận huyện"
             placeholder="Tất cả"
@@ -117,12 +220,38 @@ export default function FilterModal({ open, onClose, initial, onApply }: FilterM
         </div>
       </FilterSection>
 
+      {/* Khoảng giá */}
       <FilterSection title="Khoảng giá">
-        <ChipGroup options={PRICE_OPTIONS} value={draft.price} onChange={(price) => update({ price })} />
+        <ChipGroup
+          single
+          options={PRICE_OPTIONS}
+          value={[getPriceOptionValue(draft.maxPrice, draft.minPrice)]}
+          onChange={handlePriceChange}
+        />
       </FilterSection>
 
+      {/* Khoảng diện tích */}
       <FilterSection title="Khoảng diện tích">
-        <ChipGroup options={AREA_OPTIONS} value={draft.area} onChange={(area) => update({ area })} />
+        <ChipGroup
+          single
+          options={AREA_OPTIONS}
+          value={[draft.area]}
+          onChange={(areas) =>
+            update({
+              area: areas[0] ?? "",
+            })
+          }
+        />
+      </FilterSection>
+
+      {/* Tiện ích */}
+      <FilterSection title="Đặc điểm nổi bật">
+        <ChipGroup
+          single={false}
+          options={AMENITIES}
+          value={draft.amenities}
+          onChange={(amenities) => update({ amenities })}
+        />
       </FilterSection>
     </Modal>
   );

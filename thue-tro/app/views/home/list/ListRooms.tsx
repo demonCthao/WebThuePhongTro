@@ -22,9 +22,9 @@ export default function ListRooms() {
     const areaM2 = searchParams.get("areaM2");
 
     const { data, isLoading } = useFetch<DataList<Rooms>>({
-        url: `/rooms/by-price?pageIndex=${page}&minPrice=${minPrice}&maxPrice=${maxPrice}&province=${province?? ""}&ward=${ward?? ""}`,
+        url: `/rooms?pageIndex=${page}&minPrice=${minPrice}&maxPrice=${maxPrice}&province=${province?? ""}&ward=${ward?? ""}`,
         key: [
-            "/rooms/by-price",
+            "/rooms",
             page.toString(),
             minPrice,
             maxPrice,
