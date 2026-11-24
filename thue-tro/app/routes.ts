@@ -28,5 +28,6 @@ export default [
     route("nguoi-dung", "routes/admin/UsersRoute.tsx"),
     route("phuong", "routes/admin/WardsRoute.tsx"),
     route("blog", "routes/admin/BlogRoute.tsx"),
+    route("ads", "routes/admin/AdsRoute.tsx"),
   ]),
 ] satisfies RouteConfig;

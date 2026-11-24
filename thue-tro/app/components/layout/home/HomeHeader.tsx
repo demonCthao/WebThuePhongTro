@@ -60,10 +60,6 @@ export default function Header() {
     navigate(buildFilterUrl(values));
   };
 
-  const setSelected = (provinces: string[]) => {
-    setProvinceSelected(provinces);
-  };
-
   return (
     <header className="bg-white text-sm text-neutral-900 relative z-10 bg-white text-sm text-neutral-900 shadow-md">
       <div className="mx-auto max-w-[1300px] px-4">

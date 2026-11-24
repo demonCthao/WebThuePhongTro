@@ -1,10 +1,10 @@
 import Loading from "app/components/common/Loading";
 import { getSession } from "app/helper/auth-storage";
 import { useFetch } from "app/hooks/useFetch";
-import type { RoomLikeList } from "app/types/prisma-models";
 import { ArrowRight, Heart, Plus } from "lucide-react";
 import { Link } from "react-router";
 import ListingGridCard from "./ListingGridCard";
+import type { RoomLikeList } from "app/types/prisma-models";
 
 export default function SavedPosts() {
     const authenSession = getSession();

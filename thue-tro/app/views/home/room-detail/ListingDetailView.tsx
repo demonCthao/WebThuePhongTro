@@ -14,6 +14,7 @@ import ListingHeader from "./ListingHeader";
 import MapEmbed from "./MapEmbed";
 import { useState } from "react";
 import BookingButton from "./BookingButton";
+import BookingModal from "./BookingModal";
 
 interface ListingDetailViewProps {
   id: string;
@@ -28,6 +29,10 @@ export default function ListingDetailView({ id }: ListingDetailViewProps) {
 
   if (isLoading) {
     return <Loading />;
+  }
+
+  const onBooking = () => {
+
   }
 
   return (
@@ -112,7 +117,7 @@ export default function ListingDetailView({ id }: ListingDetailViewProps) {
               title={data?.title ?? ""}
               listingCode={data?.id ?? ""}
             />
-            <Card className="space-y-3 p-4">
+            <Card className="space-y-3 p-4 mt-2">
               <div>
                 <h3 className="text-sm font-semibold text-neutral-800">
                   Muốn xem phòng trực tiếp?
@@ -131,6 +136,8 @@ export default function ListingDetailView({ id }: ListingDetailViewProps) {
           </aside>
         </div>
       </div>
+
+      {isBookingOpen && <BookingModal onClose={() => setIsBookingOpen(false)} room={data} open onSubmit={onBooking} />}
     </div>
   );
 }

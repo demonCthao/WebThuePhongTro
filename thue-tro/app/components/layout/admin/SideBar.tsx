@@ -8,6 +8,7 @@ import {
     LayoutDashboard,
     LogOut,
     MapPinHouse,
+    RectangleGoggles,
     Users
 } from "lucide-react";
 import { useState } from "react";
@@ -43,6 +44,11 @@ const menuItems = [
         label: "Blog",
         path: "/admin/blog",
         icon: FileSpreadsheet,
+    },
+    {
+        label: "Quảng cáo",
+        path: "/admin/ads",
+        icon: RectangleGoggles,
     },
 ];
 

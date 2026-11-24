@@ -482,6 +482,15 @@ export interface AdEvents {
   users?: Users | null;
 }
 
+export interface RoomLike {
+  user_id: string;
+  room_id: string;
+  created_at: string;
+  rooms: Rooms;
+}
+
+export type RoomLikeList = RoomLike[];
+
 export interface AdPlacements {
   id: number;
   code: string;

@@ -51,7 +51,7 @@ export default function Modal({
     >
       <div className="flex max-h-[90vh] flex-col">
         <div className="flex shrink-0 items-center justify-between px-6 py-4 shadow-[0_1px_4px_rgba(0,0,0,0.08)]">
-          <h2 className="text-xl text-neutral-900">{title}</h2>
+          <h2 className="text-xl text-neutral-900 font-bold">{title}</h2>
           <button
             type="button"
             onClick={onClose}
