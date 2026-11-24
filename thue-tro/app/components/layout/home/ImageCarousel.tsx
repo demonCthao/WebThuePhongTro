@@ -1,7 +1,7 @@
-import { useState } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import ImageWithFallback from "app/components/common/ImageWithFallback";
+import Image from "app/components/common/Image";
 import { cn } from "app/helper/cn";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useState } from "react";
 
 interface ImageCarouselProps {
   images: string[];
@@ -30,10 +30,9 @@ export default function ImageCarousel({ images, alt, fastRent }: ImageCarouselPr
         }}
         className="relative bg-[#212529] outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-white/60"
       >
-        <ImageWithFallback
+        <Image
           src={images[index]}
           alt={`${alt} - ảnh ${index + 1}`}
-          fit="contain"
           className="h-[300px] w-full sm:h-[450px]"
         />
 
@@ -73,7 +72,7 @@ export default function ImageCarousel({ images, alt, fastRent }: ImageCarouselPr
                   i === index ? "border-[#ff7a45]" : "border-transparent opacity-80 hover:opacity-100"
                 )}
               >
-                <ImageWithFallback src={src} className="size-full" />
+                <Image src={src} className="size-full" />
               </button>
             </li>
           ))}

@@ -1,5 +1,5 @@
+import Image from "app/components/common/Image";
 import { cn } from "app/helper/cn";
-import ImageWithFallback from "../../common/ImageWithFallback";
 
 interface AdBannerProps {
   src?: string;
@@ -24,7 +24,7 @@ export default function AdBanner({
         className,
       )}
     >
-      <ImageWithFallback src={src} alt={alt} className="size-full" />
+      <Image src={src} alt={alt} className="size-full" />
     </a>
   );
 }

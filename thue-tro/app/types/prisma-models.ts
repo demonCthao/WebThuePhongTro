@@ -94,6 +94,16 @@ export type RoomsStatus =
   | 'rented'
   | 'expired';
 
+export type AdEventsEventType =
+  | 'impression'
+  | 'click';
+
+export type AdsStatus =
+  | 'draft'
+  | 'active'
+  | 'paused'
+  | 'expired';
+
 // ============================================
 // MODELS
 // ============================================
@@ -189,6 +199,7 @@ export interface Provinces {
   center_lng: string | null;
   sort_order: number;
   is_active: boolean;
+  ads?: Ads[];
   province_aliases?: ProvinceAliases[];
   rooms?: Rooms[];
   wards?: Wards[];
@@ -391,6 +402,8 @@ export interface Users {
   created_at: string;
   updated_at: string;
   deleted_at: string | null;
+  ad_events?: AdEvents[];
+  ads?: Ads[];
   blog_posts?: BlogPosts[];
   contact_events?: ContactEvents[];
   room_likes?: RoomLikes[];
@@ -455,16 +468,64 @@ export interface Wards {
   provinces?: Provinces;
 }
 
-export interface LoginDto {
-  username: string;
-  password: string;
-}
-
-export interface RoomLike {
-  user_id: string;
-  room_id: string;
+export interface AdEvents {
+  id: string;
+  ad_id: string;
+  user_id: string | null;
+  event_type: AdEventsEventType;
+  session_id: string | null;
+  ip_hash: string | null;
+  user_agent: string | null;
+  referrer: string | null;
   created_at: string;
-  rooms: Rooms;
+  ads?: Ads;
+  users?: Users | null;
 }
 
-export type RoomLikeList = RoomLike[];
+export interface AdPlacements {
+  id: number;
+  code: string;
+  name: string;
+  description: string | null;
+  width_px: number | null;
+  height_px: number | null;
+  max_ads: number;
+  is_active: boolean;
+  ads?: Ads[];
+}
+
+export interface AdStats {
+  ad_id: string;
+  impression_count: number;
+  click_count: number;
+  ads?: Ads;
+}
+
+export interface Ads {
+  id: string;
+  placement_id: number;
+  title: string;
+  image_url: string;
+  image_mobile_url: string | null;
+  alt_text: string | null;
+  link_url: string;
+  open_new_tab: boolean;
+  advertiser_name: string | null;
+  advertiser_phone: string | null;
+  note: string | null;
+  status: AdsStatus;
+  starts_at: string | null;
+  ends_at: string | null;
+  province_id: number | null;
+  sort_order: number;
+  weight: number;
+  created_by: string | null;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string | null;
+  ad_events?: AdEvents[];
+  ad_stats?: AdStats | null;
+  users?: Users | null;
+  ad_placements?: AdPlacements;
+  provinces?: Provinces | null;
+}

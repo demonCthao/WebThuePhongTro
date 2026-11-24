@@ -1,10 +1,10 @@
+import { ArrowUpRight, CalendarDays, Eye } from "lucide-react";
 import { Link } from "react-router";
-import { Eye, CalendarDays, ArrowUpRight } from "lucide-react";
 
 import Card from "app/components/common/Card";
-import ImageWithFallback from "app/components/common/ImageWithFallback";
-import type { BlogPosts } from "app/types/prisma-models";
+import Image from "app/components/common/Image";
 import { formatDate } from "app/helper/date";
+import type { BlogPosts } from "app/types/prisma-models";
 
 interface BlogCardProps {
     blog: BlogPosts;
@@ -19,7 +19,7 @@ export default function BlogCard({ blog }: BlogCardProps) {
                 to={`/blog/${slug}`}
                 className="relative block aspect-[16/10] overflow-hidden"
             >
-                <ImageWithFallback
+                <Image
                     src={cover_url ?? undefined}
                     alt={title}
                     className="size-full object-cover transition-transform duration-500 group-hover:scale-105"

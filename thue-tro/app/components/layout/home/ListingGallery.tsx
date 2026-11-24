@@ -1,5 +1,5 @@
+import Image from "app/components/common/Image";
 import { Camera, Play } from "lucide-react";
-import ImageWithFallback from "../../common/ImageWithFallback";
 
 interface ListingGalleryProps {
   title: string;
@@ -15,7 +15,7 @@ export default function ListingGallery({ title, images, imageCount, hasVideo }: 
   return (
     <div className="grid h-[260px] grid-cols-[3fr_2fr] gap-px overflow-hidden rounded-sm">
       <div className="relative">
-        <ImageWithFallback src={first} alt={title} className="size-full" />
+        <Image src={first} alt={title} className="size-full" />
         {hasVideo && (
           <span className="absolute inset-0 grid place-items-center">
             <Play size={30} fill="white" strokeWidth={0} className="drop-shadow" />
@@ -28,10 +28,10 @@ export default function ListingGallery({ title, images, imageCount, hasVideo }: 
       </div>
 
       <div className="grid grid-rows-2 gap-px">
-        <ImageWithFallback src={second} className="size-full" />
+        <Image src={second} className="size-full" />
         <div className="grid grid-cols-2 gap-px">
-          <ImageWithFallback src={third} className="size-full" />
-          <ImageWithFallback src={fourth} className="size-full" />
+          <Image src={third} className="size-full" />
+          <Image src={fourth} className="size-full" />
         </div>
       </div>
     </div>

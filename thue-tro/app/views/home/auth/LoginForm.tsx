@@ -1,5 +1,6 @@
 import Button from "app/components/common/Button";
 import TextField from "app/components/common/TextField";
+import { VERIFY_OTP } from "app/const/router";
 import { saveSession } from "app/helper/auth-storage";
 import { isValidPhone } from "app/helper/validators";
 import { useForm } from "app/hooks/useForm";
@@ -7,9 +8,14 @@ import { useMutationRequest } from "app/hooks/useMutation";
 import type { ApiError } from "app/types/api-error";
 import type { AuthSession } from "app/types/auth";
 import { useState, type FormEvent } from "react";
-import { Link, useLocation, useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 type LoginValues = { phone: string; password: string };
+
+export enum OtpType {
+  EMAIL = "email",
+  PHONE = "phone",
+}
 
 function validate(values: LoginValues) {
   const errors: Partial<Record<keyof LoginValues, string>> = {};
@@ -25,12 +31,30 @@ interface LoginFormProps {
 }
 
 export default function LoginForm({ redirectTo }: LoginFormProps) {
-  console.log("🚀 ~ LoginForm ~ redirectTo:", redirectTo)
+  console.log("🚀 ~ LoginForm ~ redirectTo:", redirectTo);
   const navigate = useNavigate();
-  const { search } = useLocation();
   const { values, errors, setField, validateField, validateAll } =
     useForm<LoginValues>({ phone: "", password: "" }, validate);
   const [formError, setFormError] = useState("");
+  const { mutate: mutateSendOtp } = useMutationRequest<
+    AuthSession,
+    {
+      userId: string;
+      type: OtpType;
+    }
+  >({
+    key: ["users/send-otp"],
+    url: (variables) => `users/send-otp/${variables.userId}`,
+    method: "post",
+    options: {
+      onSuccess: () => {
+        navigate(`${VERIFY_OTP}?redirect=${encodeURIComponent(redirectTo)}`);
+      },
+      onError: (error: ApiError) => {
+        setFormError(error.message ?? "");
+      },
+    },
+  });
 
   const { mutate, isPending } = useMutationRequest({
     key: ["users/login"],
@@ -40,9 +64,23 @@ export default function LoginForm({ redirectTo }: LoginFormProps) {
       onSuccess: (data: AuthSession) => {
         saveSession(data);
         navigate(redirectTo);
+
+        return;
+
+        if (data.user.email_verified_at) {
+          saveSession(data);
+          navigate(redirectTo);
+
+          return;
+        }
+
+        mutateSendOtp({
+          userId: data.user.id,
+          type: OtpType.EMAIL,
+        });
       },
       onError: (error: ApiError) => {
-        setFormError(error.message?? "");
+        setFormError(error.message ?? "");
       },
     },
   });

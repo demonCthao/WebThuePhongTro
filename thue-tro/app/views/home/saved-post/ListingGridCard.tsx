@@ -1,5 +1,5 @@
 import Card from "app/components/common/Card";
-import ImageWithFallback from "app/components/common/ImageWithFallback";
+import Image from "app/components/common/Image";
 import FavoriteButton from "app/components/layout/home/FavoriteButton";
 import { getSession } from "app/helper/auth-storage";
 import { formatDate } from "app/helper/date";
@@ -59,7 +59,7 @@ export default function ListingGridCard({ room }: ListingRowCardProps) {
                 to={`/phong-tro/${id}`}
                 className="relative block aspect-[4/3] w-full shrink-0 overflow-hidden"
             >
-                <ImageWithFallback
+                <Image
                     src={room_media?.[0]?.thumb_url || room_media?.[0]?.url}
                     alt={title}
                     className="size-full object-cover transition-transform duration-300 group-hover:scale-105"

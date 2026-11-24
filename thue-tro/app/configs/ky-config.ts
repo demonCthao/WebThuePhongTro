@@ -1,4 +1,4 @@
-import ky, { HTTPError } from 'ky';
+import ky, { HTTPError } from "ky";
 
 export const api = ky.create({
     prefix: import.meta.env.VITE_API_URL,
@@ -6,25 +6,20 @@ export const api = ky.create({
 
     retry: {
         limit: 2,
-        methods: ['get', 'post', 'put', 'delete'],
+        methods: ["get", "post", "put", "delete", "patch"],
         statusCodes: [408, 413, 429, 500, 502, 503, 504],
     },
 
     hooks: {
         beforeRequest: [
             ({ request }) => {
-                // Remove empty query params
                 const url = new URL(request.url);
-
                 for (const [key, value] of url.searchParams.entries()) {
-                    if (value.trim() === '') {
+                    if (value.trim() === "") {
                         url.searchParams.delete(key);
                     }
                 }
-
-                request = new Request(url, request);
-
-                const jwt = localStorage.getItem('jwt');
+                const jwt = localStorage.getItem("jwt");
 
                 if (jwt) {
                     try {
@@ -32,12 +27,12 @@ export const api = ky.create({
 
                         if (token) {
                             request.headers.set(
-                                'Authorization',
+                                "Authorization",
                                 `Bearer ${token}`,
                             );
                         }
                     } catch (error) {
-                        console.error('JWT parse error:', error);
+                        console.error("JWT parse error:", error);
                     }
                 }
             },
@@ -53,17 +48,13 @@ export const api = ky.create({
                     !window.location.pathname.includes("/dang-nhap-hoac-dang-ky")
                 ) {
                     localStorage.clear();
-
                     const currentUrl =
                         window.location.pathname + window.location.search;
-
                     const loginUrl = new URL(
                         "/dang-nhap-hoac-dang-ky",
                         window.location.origin,
                     );
-
                     loginUrl.searchParams.set("redirect", currentUrl);
-
                     window.location.href = loginUrl.toString();
                 }
             },
@@ -79,7 +70,7 @@ export const api = ky.create({
 
                         if (data.message) {
                             error.message = Array.isArray(data.message)
-                                ? data.message.join(', ')
+                                ? data.message.join(", ")
                                 : data.message;
                         }
                     } catch {

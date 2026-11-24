@@ -1,4 +1,5 @@
 import type { DynamicColumn } from "app/components/common/DynamicTable";
+import Image from "app/components/common/Image";
 import { formatPrice } from "app/helper/price";
 import type { Rooms } from "app/types/prisma-models";
 import { MapPin, Users, Crown, CalendarDays } from "lucide-react";
@@ -45,7 +46,7 @@ export const roomsColumns: DynamicColumn<Rooms>[] = [
                 <div className="flex min-w-[260px] items-center gap-3">
                     <div className="h-14 w-16 shrink-0 overflow-hidden rounded-lg bg-[#252529]">
                         {coverImage?.thumb_url || coverImage?.url ? (
-                            <img
+                            <Image
                                 src={coverImage.thumb_url || coverImage.url}
                                 alt={room.title}
                                 className="h-full w-full object-cover"

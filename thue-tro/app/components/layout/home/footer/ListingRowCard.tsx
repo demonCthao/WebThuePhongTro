@@ -1,12 +1,11 @@
-import { Link } from "react-router";
-import { Camera, MapPin } from "lucide-react";
-import FavoriteButton from "./FavoriteButton";
-import type { Listing } from "app/models/home/listing";
 import Card from "app/components/common/Card";
-import ImageWithFallback from "../../../common/ImageWithFallback";
-import type { Rooms } from "app/types/prisma-models";
-import { formatVnd } from "app/helper/price";
+import Image from "app/components/common/Image";
 import { formatDate } from "app/helper/date";
+import { formatVnd } from "app/helper/price";
+import type { Rooms } from "app/types/prisma-models";
+import { Camera, MapPin } from "lucide-react";
+import { Link } from "react-router";
+import FavoriteButton from "./FavoriteButton";
 
 interface ListingRowCardProps {
   room: Rooms;
@@ -22,7 +21,7 @@ export default function ListingRowCard({ room }: ListingRowCardProps) {
         to={`/phong-tro/${id}`}
         className="relative block h-[238px] w-[250px] shrink-0 overflow-hidden rounded-md max-sm:w-full"
       >
-        <ImageWithFallback src={room_media?.[0].url} alt={title} className="size-full" />
+        <Image src={room_media?.[0].url} alt={title} className="size-full" />
         <span className="absolute bottom-2 left-2 flex items-center gap-1 rounded bg-black/55 px-1.5 py-0.5 text-xs text-white">
           <Camera size={13} />
           {room_media?.length}

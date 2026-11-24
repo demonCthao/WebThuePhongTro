@@ -5,7 +5,7 @@ interface TextFieldProps extends Omit<
   InputHTMLAttributes<HTMLInputElement>,
   "onChange" | "placeholder"
 > {
-  label: string;
+  label?: string;
   value: string;
   onChange: (value: string) => void;
   error?: string;
@@ -44,28 +44,30 @@ export default function TextField({
           )}
         />
 
-        <label
-          htmlFor={id}
-          className={cn(
-            "pointer-events-none absolute left-3 top-1/2 z-10",
-            "-translate-y-1/2 origin-left",
-            "bg-white px-1 text-sm text-neutral-500",
-            "transition-all duration-200",
+        {label && (
+          <label
+            htmlFor={id}
+            className={cn(
+              "pointer-events-none absolute left-3 top-1/2 z-10",
+              "-translate-y-1/2 origin-left",
+              "bg-white px-1 text-sm text-neutral-500",
+              "transition-all duration-200",
 
-            // Focus
-            "peer-focus:top-0",
-            "peer-focus:-translate-y-[60%]",
-            "peer-focus:scale-90",
-            "peer-focus:text-[#ff5722]",
+              // Focus
+              "peer-focus:top-0",
+              "peer-focus:-translate-y-[60%]",
+              "peer-focus:scale-90",
+              "peer-focus:text-[#ff5722]",
 
-            // Has value
-            "peer-[:not(:placeholder-shown)]:top-0",
-            "peer-[:not(:placeholder-shown)]:-translate-y-[60%]",
-            "peer-[:not(:placeholder-shown)]:scale-90",
-          )}
-        >
-          {label}
-        </label>
+              // Has value
+              "peer-[:not(:placeholder-shown)]:top-0",
+              "peer-[:not(:placeholder-shown)]:-translate-y-[60%]",
+              "peer-[:not(:placeholder-shown)]:scale-90",
+            )}
+          >
+            {label}
+          </label>
+        )}
       </div>
 
       {error && (

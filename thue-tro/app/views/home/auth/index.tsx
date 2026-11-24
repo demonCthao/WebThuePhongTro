@@ -14,8 +14,7 @@ const linkClass = "text-[#1a5fd1] underline underline-offset-2 hover:no-underlin
 export default function AuthView() {
   const [searchParams] = useSearchParams();
   const [authView, setAuthView] = useState<AuthView>({mode: "login"})
-  const redirectTo = safeRedirectPath(searchParams.get("redirect"));
-  console.log("🚀 ~ AuthView ~ redirectTo:", redirectTo)
+  const redirectTo = safeRedirectPath(searchParams.get("redirect"))
 
   return (
     <div className="bg-[#fdf3ed] px-4 py-12">
