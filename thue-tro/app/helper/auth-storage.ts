@@ -1,7 +1,7 @@
 import type { AuthSession } from "app/types/auth";
 import type { Users } from "app/types/prisma-models";
 
-const STORAGE_KEY = "thue_tro_session";
+export const STORAGE_KEY = "thue_tro_session";
 
 interface StoredSession {
   access_token: string;

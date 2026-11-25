@@ -15,25 +15,51 @@ import MapEmbed from "./MapEmbed";
 import { useState } from "react";
 import BookingButton from "./BookingButton";
 import BookingModal from "./BookingModal";
+import { getSession } from "app/helper/auth-storage";
+import { redirect, useLocation, useNavigate } from "react-router";
 
 interface ListingDetailViewProps {
   id: string;
 }
 
 export default function ListingDetailView({ id }: ListingDetailViewProps) {
+  const session = getSession();
+  const location = useLocation();
+  const navigate = useNavigate();
   const [isBookingOpen, setIsBookingOpen] = useState(false);
   const { data, isLoading } = useFetch<Rooms>({
     url: `/rooms/${id}`,
     key: ["roon-id", id],
   });
 
+  const { data: hasAppointment, isLoading: isCheckingAppointment, refetch } =
+    useFetch<boolean>({
+      url: `/viewing-appointments/check/${id}`,
+      key: ["check-viewing-appointment", id],
+    });
+
   if (isLoading) {
     return <Loading />;
   }
 
-  const onBooking = () => {
+  const onCloseBooking = () => {
+    setIsBookingOpen(false);
+  };
 
-  }
+  const onBooking = () => {
+    console.log("haha");
+
+    if (!session?.access_token) {
+      const currentUrl = location.pathname + location.search + location.hash;
+
+      navigate(
+        `/dang-nhap-hoac-dang-ky?redirect=${encodeURIComponent(currentUrl)}`,
+      );
+      return;
+    }
+
+    setIsBookingOpen(true);
+  };
 
   return (
     <div className="bg-[#fdf3ed]">
@@ -126,9 +152,11 @@ export default function ListingDetailView({ id }: ListingDetailViewProps) {
                   Đặt lịch hẹn để chủ phòng sắp xếp thời gian đón bạn.
                 </p>
               </div>
-
-              <BookingButton onClick={() => setIsBookingOpen(true)} />
-
+              {hasAppointment ? (
+                <p>Bạn đã đặt lịch xem phòng này.</p>
+              ) : (
+                <BookingButton onClick={onBooking} />
+              )}
               <p className="text-center text-[11px] text-neutral-400">
                 Miễn phí đặt lịch xem phòng
               </p>
@@ -137,7 +165,9 @@ export default function ListingDetailView({ id }: ListingDetailViewProps) {
         </div>
       </div>
 
-      {isBookingOpen && <BookingModal onClose={() => setIsBookingOpen(false)} room={data} open onSubmit={onBooking} />}
+      {isBookingOpen && (
+        <BookingModal onClose={onCloseBooking} room={data} open onSuccess={refetch} />
+      )}
     </div>
   );
 }

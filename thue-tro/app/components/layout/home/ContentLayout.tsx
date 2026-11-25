@@ -23,12 +23,13 @@ export default function ContentLayout({ main, sidebar }: ContentLayoutProps) {
     <div>
       <div className="mx-auto flex max-w-[1400px] items-start justify-center gap-5 px-4 py-5">
         {/* Banner bên trái */}
-        <aside className="sticky top-4 hidden w-[120px] shrink-0 xl:ml-0 xl:mr-6 xl:block">
+        <aside className="sticky top-4 hidden w-[210px] shrink-0 xl:ml-0 xl:mr-6 xl:block">
           {sidebarAds[0] && (
             <AdBanner
               src={sidebarAds[0].image_url}
               href={sidebarAds[0].link_url}
               alt={sidebarAds[0].alt_text || sidebarAds[0].title}
+              isOpenNewTab={sidebarAds[0].open_new_tab}
             />
           )}
         </aside>
@@ -43,12 +44,13 @@ export default function ContentLayout({ main, sidebar }: ContentLayoutProps) {
         </div>
 
         {/* Banner bên phải */}
-        <aside className="sticky top-4 hidden w-[120px] shrink-0 xl:ml-6 xl:block">
+        <aside className="sticky top-4 hidden w-[210px] shrink-0 xl:ml-6 xl:block">
           {sidebarAds[1] && (
             <AdBanner
               src={sidebarAds[1].image_url}
               href={sidebarAds[1].link_url}
               alt={sidebarAds[1].alt_text || sidebarAds[1].title}
+              isOpenNewTab={sidebarAds[1].open_new_tab}
             />
           )}
         </aside>

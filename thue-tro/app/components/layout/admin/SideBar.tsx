@@ -2,6 +2,7 @@ import {
     BookOpenText,
     ChevronLeft,
     ChevronRight,
+    ClipboardClock,
     Club,
     FileSpreadsheet,
     Home,
@@ -49,6 +50,11 @@ const menuItems = [
         label: "Quảng cáo",
         path: "/admin/ads",
         icon: RectangleGoggles,
+    },
+    {
+        label: "Lịch hẹn",
+        path: "/admin/viewing-appointment",
+        icon: ClipboardClock,
     },
 ];
 

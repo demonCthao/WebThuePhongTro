@@ -8,6 +8,7 @@ import TextField from "app/components/common/TextField";
 import type { Provinces } from "app/types/prisma-models";
 import { useMutationRequest } from "app/hooks/useMutation";
 import { useNotificationStore } from "app/stores/notification.store";
+import Button from "app/components/common/Button";
 
 // ==========================================
 // TYPES
@@ -250,7 +251,7 @@ export default function ProvinceModal({
 
     const footer = (
         <div className="flex justify-end gap-2">
-            <button
+            <Button
                 type="button"
                 onClick={onClose}
                 disabled={isBusy}
@@ -258,9 +259,9 @@ export default function ProvinceModal({
             >
                 <X size={16} />
                 Hủy
-            </button>
+            </Button>
 
-            <button
+            <Button
                 type="submit"
                 form="province-form"
                 disabled={isBusy}
@@ -273,7 +274,7 @@ export default function ProvinceModal({
                     : isEdit
                       ? "Lưu thay đổi"
                       : "Thêm tỉnh / thành phố"}
-            </button>
+            </Button>
         </div>
     );
 

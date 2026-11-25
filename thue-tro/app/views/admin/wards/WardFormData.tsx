@@ -9,6 +9,7 @@ import type { Option } from "app/data/mock";
 import { useMutationRequest } from "app/hooks/useMutation";
 import { cn } from "app/helper/cn";
 import { useNotificationStore } from "app/stores/notification.store";
+import Button from "app/components/common/Button";
 
 // ==========================================
 // TYPES
@@ -305,7 +306,7 @@ export default function WardModal({
 
     const footer = (
         <div className="flex justify-end gap-2">
-            <button
+            <Button
                 type="button"
                 onClick={onClose}
                 disabled={isBusy}
@@ -313,9 +314,9 @@ export default function WardModal({
             >
                 <X size={16} />
                 Hủy
-            </button>
+            </Button>
 
-            <button
+            <Button
                 type="submit"
                 form="ward-form"
                 disabled={isBusy}
@@ -328,7 +329,7 @@ export default function WardModal({
                     : isEdit
                       ? "Lưu thay đổi"
                       : "Thêm phường xã"}
-            </button>
+            </Button>
         </div>
     );
 

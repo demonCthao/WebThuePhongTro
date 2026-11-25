@@ -7,6 +7,7 @@ import TextField from "app/components/common/TextField";
 import { useMutationRequest } from "app/hooks/useMutation";
 import { useNotificationStore } from "app/stores/notification.store";
 import type { Ads } from "app/types/prisma-models";
+import Button from "app/components/common/Button";
 
 // ==========================================
 // TYPES
@@ -445,7 +446,7 @@ export default function AdsModal({
 
     const footer = (
         <div className="flex justify-end gap-2">
-            <button
+            <Button
                 type="button"
                 onClick={onClose}
                 disabled={isBusy}
@@ -453,9 +454,9 @@ export default function AdsModal({
             >
                 <X size={16} />
                 Hủy
-            </button>
+            </Button>
 
-            <button
+            <Button
                 type="submit"
                 form="ads-form"
                 disabled={isBusy}
@@ -468,7 +469,7 @@ export default function AdsModal({
                     : isEdit
                       ? "Lưu thay đổi"
                       : "Thêm quảng cáo"}
-            </button>
+            </Button>
         </div>
     );
 

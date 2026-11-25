@@ -29,5 +29,6 @@ export default [
     route("phuong", "routes/admin/WardsRoute.tsx"),
     route("blog", "routes/admin/BlogRoute.tsx"),
     route("ads", "routes/admin/AdsRoute.tsx"),
+    route("viewing-appointment", "routes/admin/ViewingAppointmentRoute.tsx"),
   ]),
 ] satisfies RouteConfig;

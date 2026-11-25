@@ -6,6 +6,7 @@ interface AdBannerProps {
   href?: string;
   alt?: string;
   className?: string;
+  isOpenNewTab?: boolean;
 }
 
 export default function AdBanner({
@@ -13,18 +14,32 @@ export default function AdBanner({
   href = "#",
   alt = "Quảng cáo",
   className,
+  isOpenNewTab = false,
 }: AdBannerProps) {
+  if (isOpenNewTab) {
+    return (
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer sponsored"
+        className={cn(
+          "block h-[300px] w-[210px] overflow-hidden rounded-sm",
+          className,
+        )}
+      >
+        <Image src={src} alt={alt} className="size-full" />
+      </a>
+    );
+  }
+
   return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer sponsored"
+    <div
       className={cn(
-        "block h-[300px] w-[120px] overflow-hidden rounded-sm",
+        "block h-[300px] w-[210px] overflow-hidden rounded-sm",
         className,
       )}
     >
       <Image src={src} alt={alt} className="size-full" />
-    </a>
+    </div>
   );
 }

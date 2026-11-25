@@ -1,3 +1,4 @@
+import { STORAGE_KEY } from "app/helper/auth-storage";
 import ky, { HTTPError } from "ky";
 
 export const api = ky.create({
@@ -19,7 +20,7 @@ export const api = ky.create({
                         url.searchParams.delete(key);
                     }
                 }
-                const jwt = localStorage.getItem("jwt");
+                const jwt = localStorage.getItem(STORAGE_KEY);
 
                 if (jwt) {
                     try {

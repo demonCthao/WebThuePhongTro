@@ -1,3 +1,4 @@
+import Button from "app/components/common/Button";
 import Modal from "app/components/common/Modal";
 import SelectField from "app/components/common/SelectField";
 import TextField from "app/components/common/TextField";
@@ -975,7 +976,7 @@ export default function RoomModal({
 
     const footer = (
         <div className="flex justify-end gap-2">
-            <button
+            <Button
                 type="button"
 
                 onClick={onClose}
@@ -986,9 +987,9 @@ export default function RoomModal({
             >
                 <X size={16} />
                 Hủy
-            </button>
+            </Button>
 
-            <button
+            <Button
                 type="submit"
 
                 form="room-form"
@@ -1004,7 +1005,7 @@ export default function RoomModal({
                     : isEdit
                       ? "Lưu thay đổi"
                       : "Thêm phòng"}
-            </button>
+            </Button>
         </div>
     );
 

@@ -1,6 +1,7 @@
 import { useEffect, useRef, type ReactNode } from "react";
 import { X } from "lucide-react";
 import { cn } from "app/helper/cn";
+import Button from "./Button";
 
 interface ModalProps {
   open: boolean;
@@ -52,14 +53,15 @@ export default function Modal({
       <div className="flex max-h-[90vh] flex-col">
         <div className="flex shrink-0 items-center justify-between px-6 py-4 shadow-[0_1px_4px_rgba(0,0,0,0.08)]">
           <h2 className="text-xl text-neutral-900 font-bold">{title}</h2>
-          <button
+          <Button
             type="button"
             onClick={onClose}
             aria-label="Đóng"
-            className="text-neutral-700 hover:text-neutral-900 cursor-pointer"
+            className="text-neutral-700 hover:text-neutral-900 cursor-pointer w-20"
+            variant="ghost"
           >
             <X size={24} />
-          </button>
+          </Button>
         </div>
 
         <div className="min-h-0 flex-1 overflow-y-auto px-6 py-5">

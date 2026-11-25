@@ -1,22 +1,25 @@
-import { useEffect, useState, type FormEvent } from "react";
-import { CalendarDays, MapPin } from "lucide-react";
-import type { Rooms } from "app/types/prisma-models";
 import Modal from "app/components/common/Modal";
 import TextField from "app/components/common/TextField";
 import { getSession } from "app/helper/auth-storage";
+import { useMutationRequest } from "app/hooks/useMutation";
+import { useNotificationStore } from "app/stores/notification.store";
+import type { Rooms } from "app/types/prisma-models";
+import { CalendarDays, MapPin } from "lucide-react";
+import { useEffect, useState, type FormEvent } from "react";
 
 interface BookingPayload {
     room_id: string;
     appointment_at: string;
     note: string;
+    contact_phone: string;
 }
 
 interface BookingModalProps {
     open: boolean;
     onClose: () => void;
     room: Rooms | undefined;
-    onSubmit: (data: BookingPayload) => void | Promise<void>;
     isPending?: boolean;
+    onSuccess: () => void;
 }
 
 const formatPrice = (price: string) => {
@@ -29,32 +32,68 @@ const formatPrice = (price: string) => {
 
 const getMinDateTime = () => {
     const date = new Date();
-
     date.setMinutes(date.getMinutes() + 1);
     date.setSeconds(0, 0);
-
     const offset = date.getTimezoneOffset() * 60000;
 
     return new Date(date.getTime() - offset).toISOString().slice(0, 16);
+};
+
+const getTomorrowAt8AM = () => {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    tomorrow.setHours(8, 0, 0, 0);
+
+    const year = tomorrow.getFullYear();
+    const month = String(tomorrow.getMonth() + 1).padStart(2, "0");
+    const day = String(tomorrow.getDate()).padStart(2, "0");
+
+    return `${year}-${month}-${day}T08:00`;
 };
 
 export default function BookingModal({
     open,
     onClose,
     room,
-    onSubmit,
     isPending = false,
+    onSuccess,
 }: BookingModalProps) {
+    const session = getSession();
+    const notification = useNotificationStore();
     const authenSession = getSession();
-    const [appointmentAt, setAppointmentAt] = useState("");
+    const [appointmentAt, setAppointmentAt] = useState(getTomorrowAt8AM());
     const [note, setNote] = useState("");
     const [error, setError] = useState("");
-
     const [minDateTime, setMinDateTime] = useState(getMinDateTime);
+
+    const { mutate } = useMutationRequest({
+        key: ["viewing-appointments-create"],
+        url: "viewing-appointments",
+        method: "post",
+        options: {
+            onSuccess: async () => {
+                notification.updateState({
+                    message: "Lưu thành công thành công",
+                    type: "success",
+                    open: true,
+                });
+                onSuccess();
+                onClose()
+            },
+
+            onError: () => {
+                notification.updateState({
+                    message: "Lưu thành công thất bại",
+                    type: "error",
+                    open: true,
+                });
+            },
+        },
+    });
 
     useEffect(() => {
         if (!open) return;
-        setAppointmentAt("");
+        setAppointmentAt(getTomorrowAt8AM());
         setNote("");
         setError("");
         setMinDateTime(getMinDateTime());
@@ -91,10 +130,12 @@ export default function BookingModal({
         }
 
         try {
-            await onSubmit({
-                room_id: room.id,
-                appointment_at: selectedDate.toISOString(),
-                note: note.trim(),
+            mutate({
+                seeker_id: session?.user?.id,
+                room_id: String(room.id),
+                scheduled_at: appointmentAt,
+                contact_phone: authenSession?.user?.phone || "",
+                seeker_note: note.trim(),
             });
         } catch {
             setError("Không thể gửi yêu cầu đặt lịch. Vui lòng thử lại.");

@@ -69,7 +69,15 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <body>
         {children}
 
-        <Toaster theme="dark" position="top-center" closeButton richColors />
+        <Toaster
+          position="top-right"
+          theme="dark"
+          richColors={false}
+          closeButton
+          style={{
+            zIndex: 2147483647,
+          }}
+        />
 
         <ScrollRestoration />
         <Scripts />
@@ -79,6 +87,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 // Theo dõi và hiển thị notification từ Zustand
+
 function NotificationListener() {
   const notification = useNotificationStore();
 
@@ -87,49 +96,41 @@ function NotificationListener() {
 
     const baseStyle: React.CSSProperties = {
       background: "#1a1a1a",
+      color: "#ffffff",
       border: "1px solid rgba(255,255,255,0.1)",
-      color: "#fff",
+      borderRadius: "10px",
+      padding: "12px 16px",
+      fontSize: "14px",
+      fontWeight: 500,
     };
 
-    const style = {
+    const styles: Record<string, React.CSSProperties> = {
       success: {
         ...baseStyle,
-        "--normal-border": "#10b981",
-        "--normal-text": "#10b981",
+        borderColor: "#10b981",
+        color: "#10b981",
       },
       warning: {
         ...baseStyle,
-        "--normal-border": "#f59e0b",
-        "--normal-text": "#f59e0b",
+        borderColor: "#f59e0b",
+        color: "#f59e0b",
       },
       error: {
         ...baseStyle,
-        "--normal-border": "#ef4444",
-        "--normal-text": "#ef4444",
+        borderColor: "#ef4444",
+        color: "#ef4444",
       },
-    } as React.CSSProperties;
+    };
 
-    switch (notification.type) {
-      case "success":
-        toast.success(notification.message, {
-          style: styles.success,
-        });
-        break;
+    const type = notification.type;
 
-      case "warning":
-        toast.warning(notification.message, {
-          style: styles.warning,
-        });
-        break;
-
-      case "error":
-        toast.error(notification.message, {
-          style: styles.error,
-        });
-        break;
-
-      default:
-        return;
+    if (type === "success" || type === "warning" || type === "error") {
+      toast[type](notification.message, {
+        style: styles[type],
+        duration: 2500,
+      });
+    } else {
+      return;
     }
 
     const timer = setTimeout(() => {
