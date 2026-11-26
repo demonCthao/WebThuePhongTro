@@ -1,7 +1,7 @@
 import Loading from "app/components/common/Loading";
 import { getSession } from "app/helper/auth-storage";
 import { useFetch } from "app/hooks/useFetch";
-import { ArrowRight, Heart, Plus } from "lucide-react";
+import { ArrowRight, ClipboardClock, Heart, Plus } from "lucide-react";
 import { Link } from "react-router";
 import ListingGridCard from "./ListingGridCard";
 import type {
@@ -34,7 +34,7 @@ export default function SavedPosts() {
             {(data ?? [])?.length > 0 && (
                 <div className="flex flex-wrap items-center justify-between gap-3">
                     <div className="flex items-center gap-3">
-                        <div className="grid size-11 shrink-0 place-items-center rounded-xl bg-orange-50">
+                        <div className="grid size-11 shrink-0 place-items-center rounded-xl bg-orange-50 mx-3">
                             <Heart className="size-5 text-[#ff5722]" />
                         </div>
 
@@ -108,8 +108,8 @@ export default function SavedPosts() {
             {(dataViewingAppointment ?? [])?.length > 0 && (
                 <div className="flex flex-wrap items-center justify-between gap-3">
                     <div className="flex items-center gap-3">
-                        <div className="grid size-11 shrink-0 place-items-center rounded-xl bg-orange-50">
-                            <Heart className="size-5 text-[#ff5722]" />
+                        <div className="grid size-11 shrink-0 place-items-center rounded-xl bg-orange-50 mx-3">
+                            <ClipboardClock className="size-5 text-[#ff5722]" />
                         </div>
 
                         <div>

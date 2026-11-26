@@ -17,6 +17,9 @@ import BookingButton from "./BookingButton";
 import BookingModal from "./BookingModal";
 import { getSession } from "app/helper/auth-storage";
 import { redirect, useLocation, useNavigate } from "react-router";
+import Button from "app/components/common/Button";
+import RoomContractModal from "./RoomContractModal";
+import { ContactRoundIcon } from "lucide-react";
 
 interface ListingDetailViewProps {
   id: string;
@@ -27,16 +30,21 @@ export default function ListingDetailView({ id }: ListingDetailViewProps) {
   const location = useLocation();
   const navigate = useNavigate();
   const [isBookingOpen, setIsBookingOpen] = useState(false);
+  const [showContract, setShowContract] = useState(false);
+
   const { data, isLoading } = useFetch<Rooms>({
     url: `/rooms/${id}`,
     key: ["roon-id", id],
   });
 
-  const { data: hasAppointment, isLoading: isCheckingAppointment, refetch } =
-    useFetch<boolean>({
-      url: `/viewing-appointments/check/${id}`,
-      key: ["check-viewing-appointment", id],
-    });
+  const {
+    data: hasAppointment,
+    isLoading: isCheckingAppointment,
+    refetch,
+  } = useFetch<boolean>({
+    url: `/viewing-appointments/check/${id}`,
+    key: ["check-viewing-appointment", id],
+  });
 
   if (isLoading) {
     return <Loading />;
@@ -160,13 +168,29 @@ export default function ListingDetailView({ id }: ListingDetailViewProps) {
               <p className="text-center text-[11px] text-neutral-400">
                 Miễn phí đặt lịch xem phòng
               </p>
+              <Button onClick={() => setShowContract(true)} className="py-3">
+                <ContactRoundIcon size={18} />
+                Xem thông tin hợp đồng
+              </Button>
+
+              <RoomContractModal
+                isOpen={showContract}
+                onClose={() => setShowContract(false)}
+                room={data}
+                user={session?.user}
+              />
             </Card>
           </aside>
         </div>
       </div>
 
       {isBookingOpen && (
-        <BookingModal onClose={onCloseBooking} room={data} open onSuccess={refetch} />
+        <BookingModal
+          onClose={onCloseBooking}
+          room={data}
+          open
+          onSuccess={refetch}
+        />
       )}
     </div>
   );

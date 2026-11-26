@@ -145,7 +145,7 @@ export default function LoginForm({ redirectTo }: LoginFormProps) {
         </p>
       )}
 
-      <Button type="submit" loading={isPending}>
+      <Button type="submit" loading={isPending} variant="destructive" className="py-2.5 text-md">
         Đăng nhập
       </Button>
     </form>

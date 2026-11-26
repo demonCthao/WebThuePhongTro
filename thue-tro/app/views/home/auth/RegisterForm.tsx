@@ -154,7 +154,7 @@ export default function RegisterForm({ redirectTo, onChangeMode }: RegisterFormP
         </p>
       )}
 
-      <Button type="submit" loading={isPending}>
+      <Button type="submit" loading={isPending} variant="destructive" className="py-2.5 text-md">
         Tạo tài khoản
       </Button>
 
